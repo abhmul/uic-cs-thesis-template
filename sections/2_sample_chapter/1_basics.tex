@@ -3,16 +3,24 @@
 
 Suppose we are given a probability space \((\Omega, \mathcal{B}, \mathbb{P})\) and a random variable \(X \in L^{1}(\mathcal{B})\). We would like to describe the operation of "viewing" this random variable from a sub-sigma algebra \(\mathcal{G} \subset \mathcal{B}\). We call this operation \textit{conditional expectation} and define it as follows:
 
+\begin{definition}
+   The conditional expectation of \(X\) given \(\mathcal{G}\), denoted \(\mathbb{E}({X}|{\mathcal{G}})\), is a random variable with the following properties
+    \begin{enumerate}
+        \item \(\mathbb{E}({X}|{\mathcal{G}}) \in \mathcal{G}\)
+        \item \(\int\limits_{A} X d \mathbb{P} = \int\limits_{A} \mathbb{E}({X}|{\mathcal{G}}) d \mathbb{P}\) for all \(A \in \mathcal{G}\).
+    \end{enumerate}
+\end{definition}
 
+The existence and \(\mathbb{P}\)-a.s. uniqueness of a conditional expectation follows from the following measure-theoretic theorem.
 
-The Ramones are a great band from \gls{nyc}.  Probably even better than you
-remember. There have been books written about them, like ``Hey Ho Let's Go: The
-Story of the Ramones: The Story of The Ramones''~\cite{true2010hey} and ``Jews,
-punk and the Holocaust: from the Velvet Underground to the Ramones--the
-Jewish-American story''~\cite{stratton2005jews}.
+\begin{theorem}[Radon-Nikodym Theorem]
+    \label{rn-theorem}
+    Let \(X, \mathcal{M}\) be a measure space with sigma-finite nonnegative measure \(\mu\) and sigma-finite signed measure \(\nu\) so that \(\nu << \mu\). Then there exists \(\mu\)-a.e. unique \(f \in L^{1}(\mathcal{M})\) so that for all \(A \in \mathcal{M}\),
+    \[\int\limits_{A}f d \mu = \nu(A).\]
+    We denote \(\frac{d \nu}{d \mu} := f\).
+\end{theorem}
 
-\input{figures/logo}
+Note that \(\nu(A) = \int\limits_{A} X d \mathbb{P}\) is a signed measure on \((\Omega, \mathcal{B})\) and \(\mathbb{P}\) is a finite measure. Restricting \(\nu\) to \(\mathcal{G}\) does not change this fact, and applying \ref{rn-theorem} to \(\nu{\big|}_{\mathcal{G}}\) gives us our \(\mathbb{P}\)-a.s. unique conditional expectation
+\[\mathbb{E}({X}|{\mathcal{G}}) = \frac{d \nu{\big|}_{\mathcal{G}}}{d \mathbb{P}{\big|}_{\mathcal{G}}} \]
+in \(L^{1}(\mathcal{G})\).
 
-As \ref{fig:logo} shows, they had a great logo too.  And they wrote amazing
-albums, like \gls{rtr} and \gls{eofc}, and a couple more.  They even did
-three (!) jingles for Steel Reserve\footnote{The gross malt liquor.}

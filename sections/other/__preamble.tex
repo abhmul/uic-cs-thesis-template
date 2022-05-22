@@ -19,7 +19,7 @@
 \usepackage{url}
 \usepackage{caption}
 \usepackage{graphicx}
-\usepackage[]{amsthm}
+\usepackage{amsthm}
 
 \newglossarystyle{clong}{%
  \renewenvironment{theglossary}%
@@ -72,6 +72,8 @@
 \def\symbol#1{\char #1\relax}
 
 % theorem types
-\newtheorem{def}{Definition}
+% \theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
 
 \makeglossaries
