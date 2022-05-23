@@ -46,6 +46,9 @@ Note that for condition (2) of definition \ref{martingale_defn}, we need only ch
 
 We can also define the related sub(super)-martingale by changing the equality in condition (2) of definition \ref{martingale_defn} by a \(\geq\) (\(\leq\)). A submartingale represents a favorable game and a supermartingale represents an unfavorable game. We could have alternatively defined submartingale and supermartingale first, then defined a martingale as an adapted process that is both a submartingale and a supermartingale. We will later prove theorems about submartingales, but they will automatically carry over to martingales. To get the corresponding property for supermartingales, we can just look at the supermartingale's negation to turn it into a submartingale.
 
+Note that by applying \textit{smoothing} and the identity \(\mathbb{E}(Y) = \mathbb{E}(Y|\{\emptyset, \Omega\})\), we get that for any \(r \leq t \in T\), 
+\[\mathbb{E}(X_{t}) = \mathbb{E}(X_{t} | \{\emptyset, \Omega\}) = \mathbb{E}(\mathbb{E}(X_{t} | \mathcal{F}_{r})|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r}|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r})\]
+
 When our total ordering \(T = \mathbb{N}\), we have the following alternative characterization of a martingale
 \begin{proposition}
     \label{natural_martingale}
@@ -101,28 +104,31 @@ Before we proceed with the proof of proposition \ref{process_decomposition}, we 
 \end{definition}
 
 \begin{lemma}
-    \((M_{n})_{n \geq 0}\) is a martingale adapted to filtration \((\mathcal{F}_{n})_{n \geq 0}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$ adapted to the same filtration so that
-    \[M_{n} := M_{0} + \sum\limits_{j=1}^{n} d_{j},\]
+    \((M_{n})_{n \geq 1}\) is a martingale adapted to filtration \((\mathcal{F}_{n})_{n \geq 1}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$  adapted to the same filtration and \(c \in \mathbb{R}\) so that
+    \[M_{n} := c + \sum\limits_{j=1}^{n} d_{j}\]
     for all \(n \in \mathbb{N}\).
 \end{lemma}
 
 \begin{proof}
-    \((\Rightarrow)\): Let \(d_{n} := M_{n} - M_{n-1}\) for \(n \geq 1\). Then for \(n \geq 1\), the sum \(M_{0} + \sum\limits_{j=1}^{n} d_{j} = M_{0} + \sum\limits_{j=1}^{n} M_{j} - M_{j-1}\) is telescoping and is equal to \(M_{n}\).
+    \((\Rightarrow)\): Let \(d_{n} := M_{n} - M_{n-1}\) for \(n \geq 1\), where \(M_{0} = \mathbb{E}(M_{1})\). Then for \(n \geq 1\), the sum \(M_{0} + \sum\limits_{j=1}^{n} d_{j} = M_{0} + \sum\limits_{j=1}^{n} M_{j} - M_{j-1}\) is telescoping and is equal to \(M_{n}\).
     
     Now we need simply show that \((d_{n})_{n \geq 1}\) is a martingale difference sequence. Checking condition (1) of \ref{difference_defn}, we see for \(n \geq 1\) that \(\mathbb{E}|d_{n}| = \mathbb{E}|M_{n} - M_{n-1}| \leq \mathbb{E}|M_{n}| + \mathbb{E}|M_{n-1}|< \infty\), so \(d_{n} \in L^{1}(\mathcal{B})\).
 
     Checking condition (2), we see that
     \[\mathbb{E}(d_{n+1}|\mathcal{F}_{n}) = \mathbb{E}(M_{n+1}|\mathcal{F}_{n})- \mathbb{E}(M_{n}|\mathcal{F}_{n})) = M_{n} - M_{n} = 0. \checkmark\]
 
-    First checking for \(n \in \mathbb{N}\) that \(M_{n} \in L^{1}(\mathcal{B})\), consider
+    \((\Leftarrow)\): We are given difference sequence \((d_{n})_{n \geq 1}\) and constant \(c \in  \mathbb{R}\). First checking for \(n \in \mathbb{N}\) that \(M_{n} \in L^{1}(\mathcal{B})\), consider
     \begin{align*}
-        \mathbb{E}|M_{n}| &= \mathbb{E}\left| \sum\limits_{j=1}^{n} d_{j}  \right| \\
-        & \leq  \sum\limits_{j=1}^{n} \mathbb{E}| d_{j} | \\
+        \mathbb{E}|M_{n}| &= \mathbb{E}\left| c + \sum\limits_{j=1}^{n} d_{j}  \right| \\
+        & \leq  |c| + \sum\limits_{j=1}^{n} \mathbb{E}| d_{j} | \\
         & < \infty
     \end{align*}
     since \(d_{j} \in L^{1}(\mathcal{B})\) \(\forall j \in \mathbb{N}\).
 
-    Next we check condition (2) of definition \ref{martingale_defn}. 
+    Next we check condition (2) of definition \ref{martingale_defn}. Letting \(n \in \mathbb{N}\)
+    \begin{align*}
+        \mathbb{E}(M_{n+1}|\mathcal{F}_{n}) &= c + \sum\limits_{j=1}^{n+1} \mathbb{E}(d_{j}|\mathcal{F}_{n})
+    \end{align*}
 \end{proof}
 
 TODO: 
