@@ -1,14 +1,129 @@
 \section{Martingales}
 \label{stoch:martingales}
 
+We start our initial study of martingales by first setting up some underlying concepts. Again, we let \((\Omega, \mathcal{B}, \mathbb{P})\) be our default probability space.
+
+\begin{definition}
+    Let \(T\) be a total ordering and let \(S, \Sigma\) be a measure space. A \textbf{stochastic process} is a random element \(X: \Omega, \mathcal{B} \to S^{T}, \Sigma^{T}\), where \(\Sigma^{T}\) denotes the \(\Sigma\)-product sigma algebra on \(S^{T}\). We call \(S\) the \textbf{state space}.
+\end{definition}
+
+Normally, however, we think of a stochastic process as some kind random object that progresses through "time". We could alternately have defined it as an indexed collection of random elements \(\{X_{t}: \Omega, \mathcal{B} \to S, \Sigma\}_{t \in T}\). The definitions are equivalent due to the following proposition
+
+\begin{proposition}[\cite{folland_2011}]
+    Let \((Z, \mathcal{M})\), $(Y_{\alpha}, \mathcal{N}_\alpha)$ be measure spaces for $\alpha \in A$. Let $Y = \prod\limits_{\alpha \in A} Y_\alpha$ and let $\mathcal{N} = \bigotimes\limits_{\alpha \in A} \mathcal{N}_\alpha$. Let $f : Z \to Y$ and denote $f_{\alpha} := \pi_{\alpha} \circ f$, where $\pi_\alpha$ is the projection map for $\alpha \in A$. Then $f$ is $(\mathcal{M}, \mathcal{N})$-measureable iff $f_\alpha$ is $(\mathcal{M}, \mathcal{N}_\alpha)$-measureable for every $\alpha \in A$.
+\end{proposition}
+
+Therefore, we will use the two definitions interchangeably.
+
+The total ordering in the definition of stochastic process gives us our concept of "time". Usually, \(T = \mathbb{N}\) or \(\mathbb{R}\). However, we can imagine more exotic stochastic processes by choosing a total ordering that cannot be order embedded into \(\mathbb{R}\). For example, we could consider \(\mathbb{R}^{2}, \preccurlyeq\), endowed with \(\preccurlyeq\) is the lexicographic ordering of \(\mathbb{R}^{2}\). Observe that 
+\[\{\{t\} \times \mathbb{R} \subset \mathbb{R}^{2} | t \in \mathbb{R}\}\]
+is a partition of \(\mathbb{R}^{2}\) into uncountably many nondegenerate \(\preccurlyeq\)-intervals. Thus, if \(\mathbb{R}^{2}, \preccurlyeq\) could be order embedded into \(\mathbb{R}\), then \(\mathbb{R}\) would uncountably many nondegenerate intervals, each of which must contain a rational. But then the rationals would be uncountable, giving us a contradiction \cite{exotic_order}.
+
+A stochastic process defined with this more exotic total ordering would look like a grid of random variables, with each vertical slice representing a stochastic process over \(\mathbb{R}\). We could instead choose to think of it as a stochastic process of stochastic processes indexed by \(\mathbb{R}\).
+
+A stochastic process on its own does not have much more structure than a random element. We would like to incorporate the idea of measureability with respect to some growing information.
+
+\begin{definition}
+    A \textbf{filtration} is an non-decreasing collection of sub-sigma algebras \(\{\mathcal{F}_{t} \subset \mathcal{B}\}_{t \in T}\), indexed by our total ordering \(T\).
+\end{definition}
+
+\begin{definition}
+    An \textbf{adapted process} with respect to filtration \(\{\mathcal{F}_{t}\}_{t \in T}\) is a stochastic process \(\{X_{t}\}_{t \in T}\) so that \(\forall t \in T\), \(X_{t} \in \mathcal{F}_{t}\).
+\end{definition}
+
+Finally, we are ready to give our definition of a martingale, our concept of a fair game.
+
+\begin{definition}
+    \label{martingale_defn}
+    Let $X: \Omega \to \mathbb{R}^{T}$ be an adapted process wrt filtration $\mathcal{F}_{*} = (\mathcal{F}_{t})_{t \in T}$. $X$ is a \textbf{martingale} if it satisfies the following properties:
+    \begin{enumerate}
+        \item $X_{t} \in L^{1}(\Omega)$ $\forall t \in T$,
+        \item $\mathbb{E}(X_{t} | \mathcal{F}_{r}) = X_{r}$ (\(\mathbb{P}\)-a.s.) for any $r \leq t$.
+    \end{enumerate}
+\end{definition}
+
+Note that for condition (2) of definition \ref{martingale_defn}, we need only check that it holds for \(r < t\), since it already holds by the assumption that \(X\) is an adapted process and by the known information property of proposition \ref{cexpe_properties}.
+
+We can also define the related sub(super)-martingale by changing the equality in condition (2) of definition \ref{martingale_defn} by a \(\geq\) (\(\leq\)). A submartingale represents a favorable game and a supermartingale represents an unfavorable game. We could have alternatively defined submartingale and supermartingale first, then defined a martingale as an adapted process that is both a submartingale and a supermartingale. We will later prove theorems about submartingales, but they will automatically carry over to martingales. To get the corresponding property for supermartingales, we can just look at the supermartingale's negation to turn it into a submartingale.
+
+When our total ordering \(T = \mathbb{N}\), we have the following alternative characterization of a martingale
+\begin{proposition}
+    \label{natural_martingale}
+    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be an adapted process wrt filtration $\mathcal{F}_{*} = (\mathcal{F}_{n})_{n \in \mathbb{N}}$. $X$ is a martingale if and only if it satisfies the following properties:
+    \begin{enumerate}
+        \item $X_{n} \in L^{1}(\mathcal{B})$ $\forall n \in \mathbb{N}$,
+        \item $\mathbb{E}(X_{n+1} | \mathcal{F}_{n}) = X_{n}$ (\(\mathbb{P}\)-a.s.) for any $n \in \mathbb{N}$.
+    \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+    \((\Rightarrow)\) Condition (2) of \ref{natural_martingale} is just a special case of condition (2) of \ref{martingale_defn} when we set \(t = n+1 \geq n = r\).
+
+    \((\Leftarrow)\): This follows by induction. First observe that for $n = 1$, the only $m \in \mathbb{N}$ s.t. $m \leq n$ is $m = 1$. Therefore, $\forall m \leq n$, we have that $\mathbb{E}(X_{n} | \mathcal{F}_{m}) = \mathbb{E}(X_{1} | \mathcal{F}_{1}) = X_{1}$. For the inductive step, suppose this claim holds for $n \in \mathbb{N}$. Consider $m \leq n+1$. If \(m = n+1\), then \(\mathbb{E}(X_{n+1} | \mathcal{F}_{m}) = \mathbb{E}(X_{n+1} | \mathcal{F}_{n+1}) = X_{n+1}\), so we're good. On the other hand, if \(m < n+1\), then we have that $$\mathbb{E}(X_{n+1} | \mathcal{F}_{m}) = \mathbb{E}(\mathbb{E}(X_{n+1} | \mathcal{F}_{n}) | \mathcal{F}_{m}) = \mathbb{E}(X_{n} | \mathcal{F}_{m}) = X_{m}$$ by the \textit{smoothing} property of proposition \ref{cexpe_properties} and induction.
+\end{proof}
+
+We refer to such martingales as \textbf{discrete-time} martingales.
+
 TODO:
-- definition of stochastic process
-- remark about total ordering
-- definition of adapted process and filter
-- definition of martingale (total ordering), super, sub
-- connection to natural number definition
+- \st{definition of stochastic process}
+- \st{remark about total ordering}
+- \st{definition of adapted process and filter}
+- \st{definition of martingale (total ordering), super, sub}
+- \st{connection to natural number definition}
 
 \section{Decomposition of Discrete-Time martingales}
+
+A useful concept for discrete-time martingales is a predictable process
+
+\begin{definition}
+    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be an adapted process wrt filtration $(\mathcal{F}_{n})_{n \in \mathbb{N}}$. \(X\) is a \textbf{predictable process} if for all \(n \in \mathbb{N}\), \(X_{n+1} \in \mathcal{F}_{n}\)
+\end{definition}
+
+This concept is capturing the idea that we can "predict" the next value of \(X\) using the information we have now. Indeed, if at timestep \(n\) we can discern between whether a given event in \(\mathcal{F}_{n}\) occured, then for any \(x \in \mathbb{R}\) we can determine whether or not \(X = x\) since \([X=x] \in \mathcal{F}_{n}\).
+
+The following proposition reveals that we can think of any adapted process indexed by \(\mathbb{N}\) as a predictable process with some "fair" noise.
+
+\begin{proposition}
+    \label{process_decomposition}
+    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time adapted process wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let \(X_{0} := 0\) and \(\mathcal{F}_{0} = \{\emptyset, \Omega\}\). Then there exists a martingale \((M_{n})_{n \geq 0}\) and a predictable process \((A_{n})_{n \geq 1}\) so that for \(n \geq 1\)
+    \[X_{n} = M_{n} + A_{n}\]
+\end{proposition}
+
+Before we proceed with the proof of proposition \ref{process_decomposition}, we first establish a useful concept and lemma.
+
+\begin{definition}
+    \label{difference_defn}
+    Let $d: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time process adapted to filtration $(\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then, it is a \textbf{martingale difference sequence} if
+    \begin{enumerate}
+        \item $d_{j} \in L^{1}(\mathcal{B})$ $\forall j \in \mathbb{N}$
+        \item $\mathbb{E}(d_{j+1} | \mathcal{B}_{j}) = 0$ \(\forall j \in \mathbb{N}\)
+    \end{enumerate}
+\end{definition}
+
+\begin{lemma}
+    \((M_{n})_{n \geq 0}\) is a martingale adapted to filtration \((\mathcal{F}_{n})_{n \geq 0}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$ adapted to the same filtration so that
+    \[M_{n} := M_{0} + \sum\limits_{j=1}^{n} d_{j},\]
+    for all \(n \in \mathbb{N}\).
+\end{lemma}
+
+\begin{proof}
+    \((\Rightarrow)\): Let \(d_{n} := M_{n} - M_{n-1}\) for \(n \geq 1\). Then for \(n \geq 1\), the sum \(M_{0} + \sum\limits_{j=1}^{n} d_{j} = M_{0} + \sum\limits_{j=1}^{n} M_{j} - M_{j-1}\) is telescoping and is equal to \(M_{n}\).
+    
+    Now we need simply show that \((d_{n})_{n \geq 1}\) is a martingale difference sequence. Checking condition (1) of \ref{difference_defn}, we see for \(n \geq 1\) that \(\mathbb{E}|d_{n}| = \mathbb{E}|M_{n} - M_{n-1}| \leq \mathbb{E}|M_{n}| + \mathbb{E}|M_{n-1}|< \infty\), so \(d_{n} \in L^{1}(\mathcal{B})\).
+
+    Checking condition (2), we see that
+    \[\mathbb{E}(d_{n+1}|\mathcal{F}_{n}) = \mathbb{E}(M_{n+1}|\mathcal{F}_{n})- \mathbb{E}(M_{n}|\mathcal{F}_{n})) = M_{n} - M_{n} = 0. \checkmark\]
+
+    First checking for \(n \in \mathbb{N}\) that \(M_{n} \in L^{1}(\mathcal{B})\), consider
+    \begin{align*}
+        \mathbb{E}|M_{n}| &= \mathbb{E}\left| \sum\limits_{j=1}^{n} d_{j}  \right| \\
+        & \leq  \sum\limits_{j=1}^{n} \mathbb{E}| d_{j} | \\
+        & < \infty
+    \end{align*}
+    since \(d_{j} \in L^{1}(\mathcal{B})\) \(\forall j \in \mathbb{N}\).
+
+    Next we check condition (2) of definition \ref{martingale_defn}. 
+\end{proof}
 
 TODO: 
 - predictable process definition

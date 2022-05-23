@@ -20,6 +20,7 @@
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{amsthm}
+\usepackage{soul}
 
 \newglossarystyle{clong}{%
  \renewenvironment{theglossary}%
@@ -73,7 +74,9 @@
 
 % theorem types
 % \theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
 
 \makeglossaries

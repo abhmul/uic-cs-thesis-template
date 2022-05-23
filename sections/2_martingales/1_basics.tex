@@ -4,7 +4,7 @@
 Suppose we are given a probability space \((\Omega, \mathcal{B}, \mathbb{P})\) and a random variable \(X \in L^{1}(\mathcal{B})\). We would like to describe the operation of "viewing" this random variable from a sub-sigma algebra \(\mathcal{G} \subset \mathcal{B}\). We call this operation \textit{conditional expectation} and define it as follows:
 
 \begin{definition}
-   The conditional expectation of \(X\) given \(\mathcal{G}\), denoted \(\mathbb{E}({X}|{\mathcal{G}})\), is a random variable with the following properties
+   The \textbf{conditional expectation} of \(X\) given \(\mathcal{G}\), denoted \(\mathbb{E}({X}|{\mathcal{G}})\), is a random variable with the following properties
     \begin{enumerate}
         \item \(\mathbb{E}({X}|{\mathcal{G}}) \in \mathcal{G}\)
         \item \(\int\limits_{A} X d \mathbb{P} = \int\limits_{A} \mathbb{E}({X}|{\mathcal{G}}) d \mathbb{P}\) for all \(A \in \mathcal{G}\).
@@ -13,16 +13,32 @@ Suppose we are given a probability space \((\Omega, \mathcal{B}, \mathbb{P})\) a
 
 The existence and \(\mathbb{P}\)-a.s. uniqueness of a conditional expectation follows from the following measure-theoretic theorem.
 
-\begin{theorem}[Radon-Nikodym Theorem]
+\begin{theorem}[Radon-Nikodym Theorem \cite{folland_2011}]
     \label{rn-theorem}
-    Let \(X, \mathcal{M}\) be a measure space with sigma-finite nonnegative measure \(\mu\) and sigma-finite signed measure \(\nu\) so that \(\nu << \mu\). Then there exists \(\mu\)-a.e. unique \(f \in L^{1}(\mathcal{M})\) so that for all \(A \in \mathcal{M}\),
+    Let \((X, \mathcal{M})\) be a measure space with sigma-finite nonnegative measure \(\mu\) and sigma-finite signed measure \(\nu\) so that \(\nu << \mu\). Then there exists \(\mu\)-a.e. unique \(f \in L^{1}(\mathcal{M})\) so that for all \(A \in \mathcal{M}\),
     \[\int\limits_{A}f d \mu = \nu(A).\]
     We denote \(\frac{d \nu}{d \mu} := f\).
 \end{theorem}
 
-Note that \(\nu(A) = \int\limits_{A} X d \mathbb{P}\) is a signed measure on \((\Omega, \mathcal{B})\) and \(\mathbb{P}\) is a finite measure. Restricting \(\nu\) to \(\mathcal{G}\) does not change this fact, and applying \ref{rn-theorem} to \(\nu{\big|}_{\mathcal{G}}\) gives us our \(\mathbb{P}\)-a.s. unique conditional expectation
+A thorough proof of the above result can be found in \cite{folland_2011}. Note that \(\nu(A) = \int\limits_{A} X d \mathbb{P}\) is a signed measure on \((\Omega, \mathcal{B})\) and \(\mathbb{P}\) is a finite measure. Restricting \(\nu\) to \(\mathcal{G}\) does not change this fact, and applying \ref{rn-theorem} to \(\nu{\big|}_{\mathcal{G}}\) gives us our \(\mathbb{P}\)-a.s. unique conditional expectation
 \[\mathbb{E}({X}|{\mathcal{G}}) = \frac{d \nu{\big|}_{\mathcal{G}}}{d \mathbb{P}{\big|}_{\mathcal{G}}} \]
 in \(L^{1}(\mathcal{G})\).
+
+Conditional expectation has many useful properties, some of which generalize from expectation:
+\begin{proposition}
+    \label{cexpe_properties}
+    Let \(X, Y \in L^{1}(\mathcal{B})\). \(\mathbb{E}(\cdot|{\mathcal{G}})\) has the following properties
+    \begin{enumerate}
+        \item \textit{Linearity}: if \(c \in \mathbb{R}\), we have \[\mathbb{E}(X + cY|{\mathcal{G}}) = \mathbb{E}(X|{\mathcal{G}}) + c\mathbb{E}(Y|{\mathcal{G}}).\]
+        \item \textit{Monotonicity}: if \(X \leq Y\), then we have \[\mathbb{E}(X|{\mathcal{G}}) \leq \mathbb{E}(Y|{\mathcal{G}}).\]
+        \item \textit{Monotone Convergence}: if \(0 \leq X_{n} \in \mathcal{B}\), \(X_{n} \uparrow X\), we have \[\mathbb{E}(X_{n}|{\mathcal{G}}) \uparrow \mathbb{E}(X|{\mathcal{G}}).\]
+        \item \textit{Jensen's inequality}: if \(\psi: \mathbb{R} \to \mathbb{R}\) is a convex function, then \[\psi(\mathbb{E}(X|{\mathcal{G}})) \leq \mathbb{E}(\psi(X)|{\mathcal{G}})\]
+        \item \textit{Smoothing}: if \(\mathcal{F}_{1} \subset \mathcal{F}_{2} \subset \mathcal{B}\), then \[\mathbb{E}(\mathbb{E}(X|{\mathcal{F}_{2}})|\mathcal{F}_{1}) = \mathbb{E}(X|{\mathcal{F}_{1}}) = \mathbb{E}(\mathbb{E}(X|{\mathcal{F}_{1}})|\mathcal{F}_{2})\]
+        \item \textit{Known Information}: if \(X \in \mathcal{G}\), \(XY \in L^{1}(\mathcal{B})\), then \[\mathbb{E}(XY|{\mathcal{G}}) = X\mathbb{E}(Y|{\mathcal{G}})\]
+    \end{enumerate}
+\end{proposition}
+
+For any random variable \(Z \in \mathcal{B}\), we can define \(\mathbb{E}(X|Y) := \mathbb{E}(X|\sigma(Y))\). If we want to condition on the event \([Y=y]\), we can define \(\mathbb{E}(X|Y=y) = \mathbb{E}(X|Y)(\omega)\) for any \(\omega \in [Y=y]\). For any event \(A \in \mathcal{B}\) that is not defined in terms of another random variable, we can define \(\mathbb{E}(X|A) = \mathbb{E}(X|1_{A} = 1)\).
 
 \section{Regular Conditional Probabilities}
 
