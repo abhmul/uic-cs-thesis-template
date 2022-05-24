@@ -17,7 +17,7 @@ Therefore, we will use the two definitions interchangeably.
 
 The total ordering in the definition of stochastic process gives us our concept of "time". Usually, \(T = \mathbb{N}\) or \(\mathbb{R}\). However, we can imagine more exotic stochastic processes by choosing a total ordering that cannot be order embedded into \(\mathbb{R}\). For example, we could consider \(\mathbb{R}^{2}, \preccurlyeq\), endowed with \(\preccurlyeq\) is the lexicographic ordering of \(\mathbb{R}^{2}\). Observe that 
 \[\{\{t\} \times \mathbb{R} \subset \mathbb{R}^{2} | t \in \mathbb{R}\}\]
-is a partition of \(\mathbb{R}^{2}\) into uncountably many nondegenerate \(\preccurlyeq\)-intervals. Thus, if \(\mathbb{R}^{2}, \preccurlyeq\) could be order embedded into \(\mathbb{R}\), then \(\mathbb{R}\) would uncountably many nondegenerate intervals, each of which must contain a rational. But then the rationals would be uncountable, giving us a contradiction \cite{exotic_order}.
+is a partition of \(\mathbb{R}^{2}\) into uncountably many nondegenerate \(\preccurlyeq\)-intervals. Thus, if \(\mathbb{R}^{2}, \preccurlyeq\) could be order embedded into \(\mathbb{R}\), then \(\mathbb{R}\) would uncountably many disjoint nondegenerate intervals, each of which must contain a rational. But then the rationals would be uncountable, giving us a contradiction \cite{exotic_order}.
 
 A stochastic process defined with this more exotic total ordering would look like a grid of random variables, with each vertical slice representing a stochastic process over \(\mathbb{R}\). We could instead choose to think of it as a stochastic process of stochastic processes indexed by \(\mathbb{R}\).
 
@@ -37,14 +37,14 @@ Finally, we are ready to give our definition of a martingale, our concept of a f
     \label{martingale_defn}
     Let $X: \Omega \to \mathbb{R}^{T}$ be an adapted process wrt filtration $\mathcal{F}_{*} = (\mathcal{F}_{t})_{t \in T}$. $X$ is a \textbf{martingale} if it satisfies the following properties:
     \begin{enumerate}
-        \item $X_{t} \in L^{1}(\Omega)$ $\forall t \in T$,
+        \item $X_{t} \in L^{1}(\mathcal{B})$ $\forall t \in T$,
         \item $\mathbb{E}(X_{t} | \mathcal{F}_{r}) = X_{r}$ (\(\mathbb{P}\)-a.s.) for any $r \leq t$.
     \end{enumerate}
 \end{definition}
 
-Note that for condition (2) of definition \ref{martingale_defn}, we need only check that it holds for \(r < t\), since it already holds by the assumption that \(X\) is an adapted process and by the known information property of proposition \ref{cexpe_properties}.
+Note that for condition (2) of definition \ref{martingale_defn}, we need only check that it holds for \(r < t\), since it already holds for \(r = t\) by the assumption that \(X\) is an adapted process and by the known information property of proposition \ref{cexpe_properties}.
 
-We can also define the related sub(super)-martingale by changing the equality in condition (2) of definition \ref{martingale_defn} by a \(\geq\) (\(\leq\)). A submartingale represents a favorable game and a supermartingale represents an unfavorable game. We could have alternatively defined submartingale and supermartingale first, then defined a martingale as an adapted process that is both a submartingale and a supermartingale. We will later prove theorems about submartingales, but they will automatically carry over to martingales. To get the corresponding property for supermartingales, we can just look at the supermartingale's negation to turn it into a submartingale.
+We can also define the related sub(super)-martingale by changing the equality in condition (2) of definition \ref{martingale_defn} to a \(\geq\) (\(\leq\)). A submartingale represents a favorable game and a supermartingale represents an unfavorable game. We could have alternatively defined submartingale and supermartingale first, then defined a martingale as an adapted process that is both a submartingale and a supermartingale. We will later prove theorems about submartingales, but they will automatically carry over to martingales. To get the corresponding property for supermartingales, we can just look at the supermartingale's negation to turn it into a submartingale.
 
 Note that by applying \textit{smoothing} and the identity \(\mathbb{E}(Y) = \mathbb{E}(Y|\{\emptyset, \Omega\})\), we get that for any \(r \leq t \in T\), 
 \[\mathbb{E}(X_{t}) = \mathbb{E}(X_{t} | \{\emptyset, \Omega\}) = \mathbb{E}(\mathbb{E}(X_{t} | \mathcal{F}_{r})|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r}|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r})\]
@@ -88,7 +88,7 @@ The following proposition reveals that we can think of any adapted process index
 
 \begin{proposition}
     \label{process_decomposition}
-    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time adapted process wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let \(X_{0} := 0\) and \(\mathcal{F}_{0} = \{\emptyset, \Omega\}\). Then there exists a martingale \((M_{n})_{n \geq 0}\) and a predictable process \((A_{n})_{n \geq 1}\) so that for \(n \geq 1\)
+    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time adapted process wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ so that \(X_{n} \in L^{1}(\mathcal{B})\) for all \(n \geq 1\). Then there exists a martingale \((M_{n})_{n \geq 1}\) and a predictable process \((A_{n})_{n \geq 1}\) so that for \(n \geq 1\)
     \[X_{n} = M_{n} + A_{n}\]
 \end{proposition}
 
@@ -104,7 +104,8 @@ Before we proceed with the proof of proposition \ref{process_decomposition}, we 
 \end{definition}
 
 \begin{lemma}
-    \((M_{n})_{n \geq 1}\) is a martingale adapted to filtration \((\mathcal{F}_{n})_{n \geq 1}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$  adapted to the same filtration and \(c \in \mathbb{R}\) so that
+    \label{difference_martingale_equiv}
+    \((M_{n})_{n \geq 1}\) is a martingale adapted to filtration \(\mathcal{F}_{*} = (\mathcal{F}_{n})_{n \geq 1}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$  adapted to the same filtration and \(c \in \mathbb{R}\) so that
     \[M_{n} := c + \sum\limits_{j=1}^{n} d_{j}\]
     for all \(n \in \mathbb{N}\).
 \end{lemma}
@@ -112,12 +113,14 @@ Before we proceed with the proof of proposition \ref{process_decomposition}, we 
 \begin{proof}
     \((\Rightarrow)\): Let \(d_{n} := M_{n} - M_{n-1}\) for \(n \geq 1\), where \(M_{0} = \mathbb{E}(M_{1})\). Then for \(n \geq 1\), the sum \(M_{0} + \sum\limits_{j=1}^{n} d_{j} = M_{0} + \sum\limits_{j=1}^{n} M_{j} - M_{j-1}\) is telescoping and is equal to \(M_{n}\).
     
-    Now we need simply show that \((d_{n})_{n \geq 1}\) is a martingale difference sequence. Checking condition (1) of \ref{difference_defn}, we see for \(n \geq 1\) that \(\mathbb{E}|d_{n}| = \mathbb{E}|M_{n} - M_{n-1}| \leq \mathbb{E}|M_{n}| + \mathbb{E}|M_{n-1}|< \infty\), so \(d_{n} \in L^{1}(\mathcal{B})\).
+    Now we need simply show that \((d_{n})_{n \geq 1}\) is a martingale difference sequence. First note that \((d_{n})_{n \geq 1}\) is adapted to \(\mathcal{F}_{*}\) since \(M_{n} - M_{n-1} \in \mathcal{F}_{n}\) for all \(n \geq 1\). Checking condition (1) of \ref{difference_defn}, we see for \(n \geq 1\) that \(\mathbb{E}|d_{n}| = \mathbb{E}|M_{n} - M_{n-1}| \leq \mathbb{E}|M_{n}| + \mathbb{E}|M_{n-1}|< \infty\), so \(d_{n} \in L^{1}(\mathcal{B})\).
 
     Checking condition (2), we see that
-    \[\mathbb{E}(d_{n+1}|\mathcal{F}_{n}) = \mathbb{E}(M_{n+1}|\mathcal{F}_{n})- \mathbb{E}(M_{n}|\mathcal{F}_{n})) = M_{n} - M_{n} = 0. \checkmark\]
+    \[\mathbb{E}(d_{n+1}|\mathcal{F}_{n}) = \mathbb{E}(M_{n+1}|\mathcal{F}_{n})- \mathbb{E}(M_{n}|\mathcal{F}_{n})) = M_{n} - M_{n} = 0. \]
 
-    \((\Leftarrow)\): We are given difference sequence \((d_{n})_{n \geq 1}\) and constant \(c \in  \mathbb{R}\). First checking for \(n \in \mathbb{N}\) that \(M_{n} \in L^{1}(\mathcal{B})\), consider
+    Both conditions are satisfied so \((d_{n})_{n \geq 1}\) is a martingale difference sequence. \(\checkmark\)
+
+    \((\Leftarrow)\): We are given difference sequence \((d_{n})_{n \geq 1}\) and constant \(c \in  \mathbb{R}\). Note that since \((d_{n})_{n \geq 1}\) is adapted to \(\mathcal{F}_{*}\), we know \(M_{n} = c + \sum\limits_{j=1}^{n} d_{j} \in \mathcal{F}_{n}\) for all \(n \geq 0\), so \((M_{n})_{n \geq 1}\) is adapted to \(\mathcal{F}_{*}\). Now, checking for \(n \in \mathbb{N}\) that \(M_{n} \in L^{1}(\mathcal{B})\), consider
     \begin{align*}
         \mathbb{E}|M_{n}| &= \mathbb{E}\left| c + \sum\limits_{j=1}^{n} d_{j}  \right| \\
         & \leq  |c| + \sum\limits_{j=1}^{n} \mathbb{E}| d_{j} | \\
@@ -127,13 +130,56 @@ Before we proceed with the proof of proposition \ref{process_decomposition}, we 
 
     Next we check condition (2) of definition \ref{martingale_defn}. Letting \(n \in \mathbb{N}\)
     \begin{align*}
-        \mathbb{E}(M_{n+1}|\mathcal{F}_{n}) &= c + \sum\limits_{j=1}^{n+1} \mathbb{E}(d_{j}|\mathcal{F}_{n})
+        \mathbb{E}(M_{n+1}|\mathcal{F}_{n}) &= c + \sum\limits_{j=1}^{n+1} \mathbb{E}(d_{j}|\mathcal{F}_{n}) \\
+        &= \mathbb{E}(d_{n+1}|\mathcal{F}_{n}) +  c + \sum\limits_{j=1}^{n} d_{j} \\
+        &=c + \sum\limits_{j=1}^{n} d_{j} & ((d_{n})_{n \geq 1} \text{is a difference sequence})\\
+        &= M_{n}.
     \end{align*}
+
+    Both conditions are satisfied, so \((M_{n})_{n \geq 1}\) is a martingale. \(\checkmark\)
 \end{proof}
 
+Note that our proof above also gives a procedure to construct a martingale difference sequence from a martingale. Now we proceed to the proof of proposition \ref{process_decomposition}
+\begin{proof}[Proof of Proposition \ref{process_decomposition}]
+    We will deconstruct \((X_{n})_{n \geq 1}\) into
+    \begin{align*}
+        M_{n} &:= \sum\limits_{j=1}^{n} X_{j} - \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) \\
+        A_{n} &:=  X_{0} + \sum\limits_{j=1}^{n} \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) - X_{j-1} \\
+    \end{align*}
+    where we let \(\mathcal{F}_{0} := \{\emptyset, \Omega\}\) and \(X_{0} = \mathbb{E}(X_{1}|\mathcal{F}_{0}) = \mathbb{E}(X_{1})\). Then we have that
+    \begin{align*}
+        M_{n} + A_{n} &= \sum\limits_{j=1}^{n} X_{j} - \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) + X_{0} + \sum\limits_{j=1}^{n} \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) - X_{j-1} \\
+        &=  X_{0} + \sum\limits_{j=1}^{n} X_{j} - \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) + \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) - X_{j-1} \\
+        &= X_{0} + \sum\limits_{j=1}^{n} X_{j} - X_{j-1} \\
+        &= X_{n}.
+    \end{align*}
+    All that remains is to show that \((M_{n})_{n \geq 1}\) is a martingale and \((A_{n})_{n \geq 1}\) is a predictable sequence. To that end, observe that for \(n \geq 1\):
+    \begin{enumerate}
+        \item \(X_{n} - \mathbb{E}(X_{n}|\mathcal{F}_{n-1}) \in \mathcal{F}_{n}\) since \((X_{n})_{n \geq 1}\) is an adapted process and \(\mathcal{F}_{n-1} \subset \mathcal{F}_{n}\).
+        \item We are given that \(X_{n} \in L^{1}(\mathcal{B})\) and \(\mathbb{E}(X_{n}|\mathcal{F}_{n-1})\in L^{1}(\mathcal{B})\) by definition, so \(X_{n} - \mathbb{E}(X_{n}|\mathcal{F}_{n-1}) \in L^{1}(\mathcal{B})\).
+        \item \(\mathbb{E}(X_{n} - \mathbb{E}(X_{n}|\mathcal{F}_{n-1})|\mathcal{F}_{n-1})= \mathbb{E}(X_{n}|\mathcal{F}_{n-1}) - \mathbb{E}(X_{n}|\mathcal{F}_{n-1}) = 0\)
+    \end{enumerate}
+    so \(X_{n} - \mathbb{E}(X_{n}|\mathcal{F}_{n-1})\) is a martingale difference sequence. By lemma \ref{difference_martingale_equiv}, we have that \( M_{n} = \sum\limits_{j=1}^{n} X_{j} - \mathbb{E}(X_{j}|\mathcal{F}_{j-1})\) is a martingale.
+
+    On the other hand, for all \(j \geq 1\), we know that \(\mathbb{E}(X_{j}|\mathcal{F}_{j-1}) - X_{j-1} \in \mathcal{F}_{j}\) since \((X_{n})_{n \geq 1}\) is an adapted process. Because \(\mathcal{F}_{*}\) is a filtration, for all \(m \geq j\), \(\mathcal{F}_{j} \subset \mathcal{F}_{m}\). Therefore, for all \(n \geq 1\), \(A_{n} =  X_{0} + \sum\limits_{j=1}^{n} \mathbb{E}(X_{j}|\mathcal{F}_{j-1}) - X_{j-1} \in \mathcal{F}_{n}\) and it is predictable.
+\end{proof}
+
+We can interpret proposition \ref{process_decomposition} as saying any adapted process is some kind of "trend" with "fair" additive noise applied on top. This result naturally gives us some well-known decomposition results.
+
+\begin{corollary}[Doob's Submartingale Decomposition]
+    \label{doob_decomposition}
+    Let $(Y_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then there exists a martingale \((M_{n})_{n \geq 1}\) and a non-decreasing predictable process \((A_{n})_{n \geq 1}\) so that for \(n \geq 1\)
+    \[Y_{n} = M_{n} + A_{n}\]
+\end{corollary}
+
+\begin{proof}
+    Apply proposition \ref{process_decomposition} to get our martingale \((M_{n})_{n \geq 1}\) and predictable process \((A_{n})_{n \geq 1}\) so that \(Y_{n} = M_{n} + A_{n}\) for \(n \geq 1\). We must simply show that \(A_{n}\) is increasing TODO
+\end{proof}
+
+
 TODO: 
-- predictable process definition
-- decomp of adapted process into predictable process and martingale
+- \st{predictable process definition}
+- \st{decomp of adapted process into predictable process and martingale}
 - Doob's Decomposition
 
 \section{Strategies and Discrete-Time martingales}
