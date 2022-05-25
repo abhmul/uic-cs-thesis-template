@@ -259,6 +259,7 @@ The following proposition will establish that we cannot change the fairness of a
 Using the Doob decomposition, we can easily generalize this result to submartingales (and therefore supermartingales by negation):
 
 \begin{corollary}
+    \label{favorability_preservation}
     Let $(Y_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ and let \((H_{n})_{n \geq 1}\) be non-negative bounded strategy for \((Y_{n})_{n \geq 1}\). Then \(((H \cdot Y)_{n})_{n \geq 1}\) is a submartingale.
 \end{corollary}
     
@@ -322,18 +323,22 @@ We can alternatively view a stopping time as a special kind of strategy:
 \end{proof}
 
 For a adapted process $X: \Omega \to \mathbb{R}^{\mathbb{N}}$, we can denote the process resulting from stopping the game after \(\nu\) turns as:
-\[X_{n \wedge \nu} := (1_{\nu \geq \cdot} \cdot X)_{n} = \sum\limits_{m=1}^{n} 1_{\nu \geq n} (X_{m} - X_{m-1}),\]
-which is precisely how much wealth we would have if 
+\[X_{n \wedge \nu} := (1_{\nu \geq \cdot} \cdot X)_{n} = \sum\limits_{m=1}^{n} 1_{\nu \geq n} (X_{m} - X_{m-1}).\]
 
 Combining with our result about strategies, we get the following result:
 
 \begin{corollary}
-    
+    Let $(X_{n})_{n \geq 1}$ be a discrete-time (sub/super)martingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ and let \(\nu\) be stopping time on \(\mathcal{F}_{*}\). Then \((X_{n \wedge \nu})_{n \geq 1}\) is a (sub/super)martingale.
 \end{corollary}
+
+\begin{proof}
+    This follows from the definition of \(X_{n \wedge \nu}\) and application of proposition \ref{fairness_preservation} or corollary \ref{favorability_preservation}.
+\end{proof}
+
 TODO:
-- Definition
-- preservation of fairness
-- relationship to stopping times
+- \st{Definition}
+- \st{preservation of fairness}
+- \st{relationship to stopping times}
 
 \section{Convergence of Discrete-time Martingales}
 
