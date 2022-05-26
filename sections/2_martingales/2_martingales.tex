@@ -217,6 +217,7 @@ TODO:
 To further analyze martingales, we introduce the concept of a "strategy" for playing the "fair game", where we our strategy determines our move at the end of each turn.
 
 \begin{definition}
+    \label{strategy}
     Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time adapted process wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ and let $H: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a predictable process on the same filtration. Then we call \(H\) a \textbf{strategy} for \(X\) with \textbf{winnings} 
     \[(H \cdot X)_{n} := \sum\limits_{m=1}^{n} H_{m} (X_{m} - X_{m-1})\]
     for $n \geq 1$ (where \(X_{0} = 0\)).
@@ -255,6 +256,8 @@ The following proposition will establish that we cannot change the fairness of a
      
     Therefore, we have that \(((H \cdot Y)_{n})_{n \geq 1}\) is a martingale.
 \end{proof}
+
+Note that the boundedness of our strategy was only used to ensure the winnings process is integrable. We could replace the boundedness condition with alternate conditions. For example, if we had $H_{n}, Y_{n} \in L^{2}(\mathcal{B})$ $\forall n \in \mathbb{N}$, then we could apply the cauchy-schwarz inequality to get that $(H \cdot Y)_{n} \in L^{1}(\mathcal{B})$.
 
 Using the Doob decomposition, we can easily generalize this result to submartingales (and therefore supermartingales by negation):
 
@@ -342,9 +345,157 @@ TODO:
 
 \section{Convergence of Discrete-time Martingales}
 
+So far we have concerned ourselves with properties of martingales without looking at any limiting behavior. Under the right conditions, we will find that discrete-time martingales do converge to a random variable. To establish this, we'll take approach of analyzing upcrossings.
+
+\begin{proposition}
+    Let $(\mathcal{F}_{n})_{n=1}^{\infty}$ be a filtration and let $(X_{n})_{n=1}^{\infty}$ be adapted to $(\mathcal{F}_{n})_{n=1}^{\infty}$. Let $a < b \in \mathbb{R}$. Then the following random variables are stopping times for $k \geq 1$:
+    \begin{align*}
+        N_{2k-1} &:= \inf\limits \{m > N_{2k-2} : X_{m} \leq a\}\\
+        N_{2k} &:= \inf\limits \{m > N_{2k-1} : X_{m} \geq b\}\\
+    \end{align*}
+    with \(N_{0} = 0\). We define the $\mathcal{F}_{n}$-random variable 
+    $$U_{n}[a,b] = \sup\limits \{k \geq 0 : N_{2k} \leq n\}$$
+    to be the number of \textbf{complete upcrossings} by time $n \in \mathbb{N}$.
+\end{proposition}
+
+\begin{proof}
+    We wish to check that \(N_{2k-1}, N_{2k}\) are stopping times for \(k \geq 1\) and that \(U_{n}[a,b] \in \mathcal{F}_{n}\). We establish the first claim by induction. First observe that, letting $n \in \mathbb{N}$,
+    \begin{align*}
+        [N_{1} = n] &= [X_{1} > a, \dots, X_{n-1} > a] \cap [X_{n} \leq a] \in \mathcal{F}_{n}\\
+    \end{align*}
+    by virtue of $(\mathcal{F}_{n})_{n=1}^{\infty}$ being a filtration, so $N_{1}$ is a stopping time. Now suppose $N_{1}, \dots, N_{2k-1}$ are stopping times for $k \geq 1$ . Then, letting $n \in \mathbb{N}$,
+    \begin{align*}
+        [N_{2k} = n] &= [X_{N_{2k-1}+1} < b, \dots, X_{n-1} < b] \cap [X_{n} \geq b] \in \mathcal{F}_{n}\\
+        &\bigcup\limits_{m = 1}^{n-1} [X_{m+1} < b, \dots, X_{n-1} < b] \cap [X_{n} \geq b] \cap [N_{2k-1} = m] \in \mathcal{F}_{n}
+    \end{align*}
+    by virtue of $N_{2k-1}$ being a stopping time and $(\mathcal{F}_{n})_{n=1}^{\infty}$ being a filtration. Thus, $N_{2k}$ is a stopping time. A similar approach will show that $N_{2k+1}$ must also be a stopping time.
+    
+    Now we check that $U_{n}[a,b] \in \mathcal{F}_{n}$. Let $k \in \mathbb{N}$, then 
+    $$[U_{n}[a,b] = k] = [N_{2k} \leq n] \cap [N_{2k+2} > n] \in \mathcal{F}_{n},$$
+    which holds because $N_{2k}$ and $N_{2k+2}$ are both stopping times.
+\end{proof}
+
+\begin{proposition}
+    Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be discrete-time process adapted to $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let
+    $$H_{n} := \begin{cases} 
+    1 & \text{if } \exists k \geq 1 \text{ s.t. } N_{2k-1} < n \leq N_{2k} \\
+    0  & \text{otherwise}
+    \end{cases}$$
+    Then $(H_{n})_{n \geq 1}$ is a predictable process, and thus a strategy for $(X_{n})_{n \geq 1}$. We call it the \textbf{upcrossing strategy}.
+\end{proposition}
+
+\begin{proof}
+    $$H_{n} = \sum\limits_{k=1}^{\infty} 1_{N_{2k-1} \leq n-1} 1_{n-1 < N_{2k}}$$
+    and $N_{j}$ are all stopping times for $j \geq 1$. Therefore $H_{n} \in \mathcal{F}_{n-1}$ and it is predictable.
+\end{proof}
+
+We now prove some sufficient criteria for a submartingale (and thus a martingale) to converge almost surely to a random variable in \(L^{1}(\mathcal{B})\). First a useful lemma about submartingales
+
+\begin{lemma}
+    Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let \(\psi: \mathbb{R} \to \mathbb{R}\) be a non-decreasing convex function so that \(\psi(X_{n}) \in L^{1}(\mathcal{B})\) for all \(n \geq 1\). Then $(\psi(X_{n}))_{n \geq 1}$ is a submartingale. 
+\end{lemma}
+
+\begin{proof}
+    Since all real convex functions are continuous, we have that \(\psi(X_{n}) \in \mathcal{F}_{n}\) since \(X_{n} \in \mathcal{F}_{n}\) and \(\psi\) is borel measureable for all \(n \geq 1\). We have already assumed that \(\psi(X_{n}) \in L^{1}(\mathcal{B})\) for all \(n \geq 1\). Finally, letting \(n \geq 1\), observe that
+    \[\mathbb{E}(\psi(X_{n+1})|\mathcal{F}_{n}) \geq \psi(\mathbb{E}(X_{n+1}|\mathcal{F}_{n})) \geq \psi(X_{n}).\]
+\end{proof}
+
+\begin{proposition}[Upcrossing Inequality]
+    \label{upcrossing_inequality}
+    Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then $\forall a < b \in \mathbb{R}$, 
+    $$(b-a)\mathbb{E}(U_{n}[a,b]) \leq \mathbb{E}(X_{n} - a)^{+} - \mathbb{E}(X_{1} - a)^{+}$$
+\end{proposition}
+
+\begin{proof}
+    Let $(H_{n})_{n \geq 1}$ be the upcrossing strategy for $(X_{n})_{n \geq 1}$. We let $Y_{n} = a + (X_{n} - a)^{+}$ for $n \geq 1$. Because of the convexity of $(\cdot)^{+}$, we have that $(Y_{n})_{n \geq 1}$ is a submartingale. The only difference between $X_{n}$ and $Y_{n}$ is that $Y_{n} = a$ when $X_{n} \leq a$ for all $n \geq 1$. Therefore $(Y_{n})_{n \geq 1}$ has a the same number of complete upcrossings as $(X_{n})_{n \in \mathbb{N}}$. Since $(Y_{n})_{n \geq 1}$ cannot dip below $a$, we have that
+    \begin{equation}
+        \label{upcrossing_eqn}
+        (b-a)U_{n}[a,b] \leq (H \cdot Y)_{n} = \sum\limits_{m=1}^{n} H_{m}(Y_{m} - Y_{m-1})
+    \end{equation}
+    with $Y_{0} = 0$ as in the definition \ref{strategy}, since $H_{n} = 1$ if and only if $Y_{n}$ is rising up to $b$ after a fall from above $b$ down to $a$ for $n \geq 2$. That is, we will include a $(b-a)$ for each upcrossing in the sum along with any extra that comes from breaking above $b$ and any remaining incomplete upcrossing. Furthermore, for $n \geq 1$
+    $$Y_{n} = \sum\limits_{m=1}^{n} Y_{m} - Y_{m-1} = \sum\limits_{m=1}^{n} (H_{m} - (1 - H_{m}))(Y_{m} - Y_{m-1}) = (H \cdot Y)_{n} + ((1-H) \cdot Y)_{n}.$$
+    Denote $K := 1-H$. Thus, $\mathbb{E}(Y_{n})= \mathbb{E}((H \cdot Y)_{n}) + \mathbb{E}((K \cdot Y)_{n})$. Since $K$ is just another strategy, corollary \ref{favorability_preservation} tells us that $((K \cdot Y)_{n})_{n \geq 1}$ is another submartingale. Then, we have that $\mathbb{E}((K \cdot Y)_{n}) \geq \mathbb{E}((K \cdot Y)_{1})$ by smoothing. Note that $H_{1} = 0$ since all $N_{2k-1} \geq 1$ for $k \geq 1$. Thus 
+    $$(K \cdot Y)_{1} = Y_{1} - Y_{0} = Y_{1}.$$
+    Therefore, $\mathbb{E}(Y_{n}) - \mathbb{E}(Y_{1}) \geq \mathbb{E}(H \cdot Y)_{n}$. Putting it together with \ref{upcrossing_eqn}, we get
+    $$(b-a)\mathbb{E}(U_{n}[a,b]) \leq \mathbb{E}((H \cdot Y)_{n}) \leq \mathbb{E}(Y_{n}) - \mathbb{E}(Y_{1})$$
+    Substituting our original expression for $Y_{n}$,
+    $$(b-a)\mathbb{E}(U_{n}[a,b]) \leq a + \mathbb{E}(X_{n} - a)^{+} - a - \mathbb{E}(X_{1} - a)^{+} = \mathbb{E}(X_{n} - a)^{+} - \mathbb{E}(X_{1} - a)^{+}$$
+\end{proof}
+
+Using proposition \ref{upcrossing_inequality}, we can prove convergence submartingales with uniformly bounded first moment:
+
+\begin{theorem}[Martingale Convergence Theorem]
+    \label{martingale_convergence}
+    Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ so that \(\sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+} < \infty\). Then there exists \(X \in L^{1}(\mathcal{B})\) so that \(X_{n} \to X\) almost surely.
+\end{theorem}
+
+Before preceding with the proof of theorem \ref{martingale_convergence}, we first establish a helpful lemma.
+
+\begin{lemma}
+    \label{submartingale_moments}
+    Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then $\sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+} < \infty$ iff $\sup\limits_{n \geq 1} \mathbb{E}|X_{n}| < \infty$.
+\end{lemma}
+
+\begin{proof}
+    ($\Rightarrow$): Because $(X_{n})_{n \geq 1}$ is a submartingale, $\forall n \geq 1$,
+    \begin{align*}
+        &\mathbb{E}(X_{n}) \geq \mathbb{E}(X_{1})\\
+        \Rightarrow&\mathbb{E}(X_{n})^{+} - \mathbb{E}(X_{n})^{-} \geq \mathbb{E}(X_{1})\\
+        \Rightarrow&\mathbb{E}(X_{n})^{+} - \mathbb{E}(X_{1}) \geq \mathbb{E}(X_{n})^{-} \\
+        \Rightarrow&\infty > \sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+} - \mathbb{E}(X_{1}) \geq \sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{-}
+    \end{align*}
+
+    Thus,
+    \begin{align*}
+        \sup\limits_{n \geq 1} \mathbb{E}|X_{n}| &= \sup\limits_{n \geq 1} (\mathbb{E}(X_{n})^{+} + \mathbb{E}(X_{n})^{-})\\
+        &\leq \sup\limits_{n \geq 1} (\mathbb{E}(X_{n})^{+}) + \sup\limits_{n \geq 1} (\mathbb{E}(X_{n})^{-})\\
+        &< \infty 
+    \end{align*}
+    $\checkmark$
+
+    ($\Leftarrow$): This follows because
+    $$\infty > \sup\limits_{n \geq 1} \mathbb{E}|X_{n}| \geq \sup\limits_{n \geq 1} (\mathbb{E}(X_{n})^{+} + \mathbb{E}(X_{n})^{-}) \geq \sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+}$$
+    $\checkmark$
+\end{proof}
+
+\begin{proof}[Proof of theorem \ref{martingale_convergence}]
+    Letting $a < b \in \mathbb{R}$, we uniformly bound the number of complete upcrossings with proposition \ref{upcrossing_inequality}. First note that if $a \geq 0$ 
+    $$(X_{n} - a)^{+} = 1_{X_{n} \geq a}X_{n} -1_{X_{n} \geq a}a \leq 1_{X_{n} \geq a}X_{n} \leq (X_{n})^{+}$$
+    and if $a < 0$
+    $$(X_{n} - a)^{+} = 1_{X_{n} \geq a}X_{n} -1_{X_{n} \geq a}a = (X_{n})^{+} + 1_{0 > X_{n} \geq a}X_{n} -1_{X_{n} \geq a}a \leq (X_{n})^{+} + |a|.$$
+
+    So $\forall n \geq 1$
+    \begin{align*}
+        (b - a) \mathbb{E}(U_{n}[a, b]) &\leq \mathbb{E}(X_{n} - a)^{+} - \mathbb{E}(X_{1} - a)^{+}\\
+        &\leq \mathbb{E}(X_{n})^{+} + |a|\\
+        &\leq M + |a|
+    \end{align*}
+    for $\infty > M \geq \sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+}$. Therefore, we have that $\mathbb{E}(U_{n}[a,b]) \leq \frac{M + |a|}{b-a}$. Since $U_{n}[a,b]$ is non-decreasing as $n \to \infty$, it converges (possibly to $\infty$), say to $U[a,b]$. By monotone convergence theorem, we have that 
+    $$\frac{M + |a|}{b-a} \geq \lim\limits_{n \to \infty} \mathbb{E}(U_{n}[a,b]) = \mathbb{E}(U[a,b]).$$
+    Therefore, $U[a,b]$ must be finite almost surely (otherewise $\mathbb{E}(U[a,b]) = \infty$). This means that
+    $$\mathbb{P}[\liminf\limits_{n \to \infty} X_{n} \leq a < b \leq \limsup\limits_{n \to \infty} X_{n}] = 0,$$
+    since that event occurs iff $U[a,b] = \infty$.
+
+    Therefore
+    $$\bigcup\limits_{a, b \in \mathbb{Q}} [\liminf\limits_{n \to \infty} X_{n} \leq a < b \leq \limsup\limits_{n \to \infty} X_{n}]$$
+    is a null set. But then we must have that $\liminf\limits_{n \to \infty} X_{n} = \limsup\limits_{n \to \infty} X_{n} =: X$ almost surely.
+
+    Finally, we show that $X \in L^{1}(\mathcal{B})$. By lemma \ref{submartingale_moments}, $\infty > \sup\limits_{n \geq 1} \mathbb{E}|X_{n}|$. By Fatou's Lemma, we have that
+    $$\mathbb{E}|X| \leq \liminf\limits_{n \to \infty} \mathbb{E}|X_{n}| \leq \sup\limits_{n \geq 1} \mathbb{E}|X_{n}| < \infty.$$
+    so $X \in L^{1}(\mathcal{B})$.
+\end{proof}
+
+We end this section by looking at a couple examples to help us understand what theorem \ref{martingale_convergence} tells us (and what it doesn't).
+
+\textbf{Example 1}: Consider the simple random walk $(X_n)_{n \geq 1}$ starting at \(0\) with increments of \(\pm 1\). Let \(\nu := \inf\limits \{n \geq 1 : X_{n} \geq 2\}\). Since \((X_n)_{n \geq 1}\) is a martingale and \(\nu\) is a stopping time, so \(X_{n \wedge \nu}\) is a martingale as well. Since \((X_n)_{n \geq 1}\) starts at \(0\) and moves by at most \(1\), we must have that \(\nu \geq 3\). So \(0 = \mathbb{E}(X_{1}) = \mathbb{E}(X_{1 \wedge \nu}) = \mathbb{E}(X_{n \wedge \nu})\) \(\forall n \geq 1\). Now certainly \(\sup\limits_{n \geq 1} \mathbb{E}(X_{n \wedge \nu})^{+} \leq 2\), so \(X_{n \wedge \nu} \to X\) almost surely by theorem \ref{martingale_convergence}. Since \(X_{n \wedge \nu}\) only takes integral values, \(X\) must (almost surely) as well. But since \(X_{n \wedge \nu}\) changes by \(\pm 1\) if it is not already at \(2\), \(X\) must be \(2\). Thus, \(\mathbb{E}(X) = 2 \neq 0 = \mathbb{E}(X_{n \wedge \nu})\) for \(n \geq 1\). Therefore \((X_{n \wedge \nu})_{n \geq 1}\) cannot converge in \(L^{1}(\mathcal{B})\).
+
+This example seems to fly in our face of what it means to be a "fair game". How can \((X_{n \wedge \nu})_{n \geq 1}\) be a martingale, but converge to something with larger expectation almost surely? If we were to play finitely many games, then the probability mass assigned to positive results \(1\) and \(2\) will be matched equally by the probability mass asssigned to negative results. That is, although it is almost sure that at some \(n\) we will hit \(X_{n} = 2\), we may suffer very large losses before that happens. 
+
+\textbf{Example 2}:
+
 TODO:
-- Upcrossing inequality
-- convergence of discrete-time martingales
+- \st{Upcrossing inequality}
+- \st{convergence of discrete-time martingales}
 - pathological examples
 
 \section{Cotninuous-time martingales, definitions}
