@@ -46,7 +46,7 @@ To prove this theorem, we will apply the \textit{differential equation method}. 
     \[\mathbb{P}(Y_{n} - Y_{0} \geq  \lambda) \leq \exp\left(-\frac{\lambda^{2}}{2C^{2}n}\right)\]
 \end{theorem}
 
-TODO: Proof?
+% TODO: Proof?
 
 The following will also be useful:
 
@@ -63,9 +63,9 @@ We would like to show that \(Y_{k}(i) = n y_{k}(t_{i})\) a.a.s. for \(t_{i} := \
 \[n(y_{k}(t_{i}) - \epsilon_{n}(t_{i})) \leq Y_{k}(i) \leq n(y_{k}(t_{i}) + \epsilon_{n}(t_{i}))\]
 tends to probability 1. This reasoning behind this choice of \(\epsilon_{n}\) will be clear as we proceed with the computations.
 
-For now, we'll assume such a \(y_{k}\) exists and is in \(C^{2}([0, c])\), but take it to be unknown. Let \(\nu_{n} := \inf\limits \{i \geq 0 : Y_{k}(i) \not\in [n(y_{k}(t_{i}) - \epsilon_{n}(t_{i})), n(y_{k}(t_{i}) + \epsilon_{n}(t_{i}))]\}\). Define
-\[Y_{k}^{\pm}(i) = Y_{k}(i \wedge \nu_{n}) - n(y_{k}(t_{i \wedge \nu_{n}}) \pm \epsilon_{n}(t_{i \wedge \nu_{n}})) \]
-Effectively, we're freezing our error once \(Y_{k}(i)\) leaves our error bound. We will show that \(Y_{k}^{+}(i)\) is a supermartingale. Using that, we will use Azuma-Hoeffding (theorem \ref{azuma}) to show that \(\mathbb{P}(\nu_{n} = O(n)) = o(1)\). The corresponding computations for \(Y_{k}^{-}\) are symmetric.
+For now, we'll assume such a \(y_{k}\) exists and is in \(C^{2}([0, c])\), but take it to be unknown. Let \(\nu_{n}^{\pm} := \inf\limits \{i \geq 0 : \pm (Y_{k}(i) - n(y_{k}(t_{i})) > \epsilon_{n}(t_{i}))\}\). Define
+\[Y_{k}^{\pm}(i) = Y_{k}(i \wedge \nu_{n}^{\pm}) - n(y_{k}(t_{i \wedge \nu_{n}^{\pm}}) \pm \epsilon_{n}(t_{i \wedge \nu_{n}^{\pm}})) \]
+Effectively, we're freezing our error once \(Y_{k}(i)\) leaves our error bound. We will show that \(Y_{k}^{+}(i)\) is a supermartingale. Using that, we will use Azuma-Hoeffding (theorem \ref{azuma}) to show that \(\mathbb{P}(\nu_{n}^{+} = O(n) \text{ or } \nu_{n}^{-} = O(n)) = o(1)\). The corresponding computations for \(Y_{k}^{-}\) are symmetric.
 
 Let's take a look at the one-step change of \(Y_{k}\) from \(i\) to \(i+1\), which we'll call \(\Delta Y_{k}(i)\). Given \(\mathcal{F}_{i}\) (that is, the first \(i\) choices of edges), we have the possible outcomes for new edge \(\omega_{i+1}\):
 \begin{enumerate}
@@ -98,15 +98,15 @@ Next, we look at the contribution of case 3:
 \end{align*}
 where we again use the fact that \(Y_{j}(i), Y_{k-j}(i) \leq n\) and \(j, k-j \leq \kappa\). Thus, we have that
 \[\mathbb{E}(\Delta Y_{k}(i)|\mathcal{F}_{i}) = -2 k \frac{Y_{k}(i)}{n} + \sum\limits_{j=1}^{k-1} \Big[ 2 j (k - j) \frac{Y_{j}(i)}{n}  \frac{Y_{k-j}(i)}{n} \Big] + O(\frac{1}{n})\]
-Assuming \(i < \nu_{n}\), we have that
+Assuming \(i < \nu_{n}^{+}\), we have that
 \begin{align*}
-    \mathbb{E}(\Delta Y_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}]) &= -2 k (y_{k}(t_{i}) + \epsilon_{n}(t_{i})) + \sum\limits_{j=1}^{k-1} \Big[ j (k - j) (y_{j}(t_{i}) + \epsilon_{n}(t_{i})) (y_{k-j}(t_{i}) + \epsilon_{n}(t_{i})) \Big] + O(\frac{1}{n}) \\
+    \mathbb{E}(\Delta Y_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}^{+}]) &= -2 k (y_{k}(t_{i}) + \epsilon_{n}(t_{i})) + \sum\limits_{j=1}^{k-1} \Big[ j (k - j) (y_{j}(t_{i}) + \epsilon_{n}(t_{i})) (y_{k-j}(t_{i}) + \epsilon_{n}(t_{i})) \Big] + O(\frac{1}{n}) \\
     &\leq -2 k y_{k}(t_{i}) + \sum\limits_{j=1}^{k-1} \Big[ j (k - j) y_{j}(t_{i})y_{k-j}(t_{i})\Big] -2 k \epsilon_{n}(t_{i}) + \epsilon_{n}(t_{i}) 3 k^{3} + O(\frac{1}{n}) \\
     &\leq -2 k y_{k}(t_{i}) + \sum\limits_{j=1}^{k-1} \Big[ j (k - j) y_{j}(t_{i})y_{k-j}(t_{i})\Big] + \epsilon_{n}(t_{i}) 3 k^{3} + O(\frac{1}{n})
 \end{align*}
 using the fact that \(y_{l}(t) \leq 1\) for all \(1 \leq l \leq \kappa, 0 \leq t \leq c\) and \(0 \leq \epsilon_{n}(t) \leq 1\) for sufficiently large \(n\) for all \(0 \leq t \leq c\).
 
-Now note that given \([i < \nu_{n}]\), \(\Delta Y_{k}^{+}(i) = \Delta Y_{k}(i) - (y_{k}(t_{i} + \frac{1}{n}) - y_{k}(t_{i}) + \epsilon_{n}(t_{i} + \frac{1}{n}) - \epsilon_{n}(t_{i}))\). We can simplify that last term using Taylor's Theorem (theorem \ref{taylor}) to get
+Now note that given \([i < \nu_{n}^{+}]\), \(\Delta Y_{k}^{+}(i) = \Delta Y_{k}(i) - (y_{k}(t_{i} + \frac{1}{n}) - y_{k}(t_{i}) + \epsilon_{n}(t_{i} + \frac{1}{n}) - \epsilon_{n}(t_{i}))\). We can simplify that last term using Taylor's Theorem (theorem \ref{taylor}) to get
 \begin{align*}
     n(y_{k}(t_{i} + \frac{1}{n}) - y_{k}(t_{i})) &= n(\frac{y_{k}'(t_{i})}{n} + \frac{y_{k}''(\tau)}{n^{2}} \\
     &= y_{k}'(t_{i}) + O(\frac{1}{n})
@@ -115,7 +115,7 @@ for some \(\tau \in (t_{i}, t_{i+1})\). Note that \(y_{k} \in C^{2}([0, c])\), s
 \[n(\epsilon_{n}(t_{i} + \frac{1}{n}) - \epsilon_{n}(t_{i})) = \epsilon_{n}'(t_{i}) + O(\frac{1}{n})\]
 Thus, we get
 \begin{align*}
-    \mathbb{E}(\Delta &Y^{+}_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}]) \\
+    \mathbb{E}(\Delta &Y^{+}_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}^{+}]) \\
     &= -2 k y_{k}(t_{i}) + \sum\limits_{j=1}^{k-1} \Big[ j (k - j) y_{j}(t_{i})y_{k-j}(t_{i})\Big]  + \epsilon_{n}(t_{i}) 3 k^{3} - y_{k}'(t_{i}) - \epsilon_{n}'(t_{i}) + O(\frac{1}{n})
 \end{align*}
 Note that if we choose our \((y_{k})_{k=1}^{\kappa}\) so that it solves the ODE system
@@ -123,13 +123,13 @@ Note that if we choose our \((y_{k})_{k=1}^{\kappa}\) so that it solves the ODE 
 
 then we will get 
 \begin{align*}
-    \mathbb{E}(\Delta &Y^{+}_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}]) \\
+    \mathbb{E}(\Delta &Y^{+}_{k}(i)|\mathcal{F}_{i}, [i < \nu_{n}^{+}]) \\
     &= \epsilon_{n}(t_{i}) 3 k^{3} - \epsilon_{n}'(t_{i}) + O(\frac{1}{n})\\
     &=  3 k^{3} n^{-1/3} e^{4 \kappa^{3}t_{i}} - 4 \kappa^{3} n^{-1/3} e^{4 \kappa^{3}t_{i}} + O(\frac{1}{n}) \\
     &\leq  -\kappa^{3} n^{-1/3} e^{4 \kappa^{3}t_{i}} + O(\frac{1}{n}) \\
     &\leq 0
 \end{align*}
-for sufficiently large \(n\). Note that we applied \(k \leq \kappa\) above. From this computation the particular choice for the exponential part of our error term should now make sense. For the event \([i \geq \nu_{n}]\), \(Y^{+}_{k}\) is frozen and we have that \(\mathbb{E}(\Delta Y^{+}_{k}(i)|\mathcal{F}_{i}, [i \geq \nu_{n}]) = 0\). This means \(\mathbb{E}(\Delta Y^{+}_{k}(i)|\mathcal{F}_{i})\leq 0\) and is thus a supermartingale.
+for sufficiently large \(n\). Note that we applied \(k \leq \kappa\) above. From this computation the particular choice for the exponential part of our error term should now make sense. For the event \([i \geq \nu_{n}^{+}]\), \(Y^{+}_{k}\) is frozen and we have that \(\mathbb{E}(\Delta Y^{+}_{k}(i)|\mathcal{F}_{i}, [i \geq \nu_{n}^{+}]) = 0\). This means \(\mathbb{E}(\Delta Y^{+}_{k}(i)|\mathcal{F}_{i})\leq 0\) and is thus a supermartingale.
 
 Now to solve our ODE system
 \[y_{k}' = -2 k y_{k} + \sum\limits_{j=1}^{k-1} \Big[ 2 j (k - j) y_{j}y_{k-j}\Big] \text{ } \forall 1 \leq k \leq \kappa. \]
@@ -183,7 +183,7 @@ We claim (unsurprisingly) that \(y_{k}(t) = \frac{k^{k-2}}{k!}(2t)^{k-1} e^{-2kt
 
 So we have that for \(y_{k}(t) = \frac{k^{k-2}}{k!}(2t)^{k-1} e^{-2kt}\) and \(\epsilon_{n}(t) = n^{-1/3} e^{4 \kappa^{3}t}\), \((Y^{+}_{k}(i))_{i=0}^{\lfloor {cn} \rfloor}\) is a supermartingale.
 
-We would now like to apply Azuma-Hoeffding (Theorem \ref{azuma}). First we need to show \(|\Delta Y_{k}^{+}(i)| = O(1)\) a.s. \(\forall 0 \leq i \leq \lfloor {cn} \rfloor\). This is straightforward since \(\Delta Y_{k}^{+}(i) = 0\) if \(i \geq \nu_{n}\), otherwise 
+We would now like to apply Azuma-Hoeffding (Theorem \ref{azuma}). First we need to show \(|\Delta Y_{k}^{+}(i)| = O(1)\) a.s. \(\forall 0 \leq i \leq \lfloor {cn} \rfloor\). This is straightforward since \(\Delta Y_{k}^{+}(i) = 0\) if \(i \geq \nu_{n}^{+}\), otherwise 
 \begin{align*}
     |\Delta Y_{k}^{+}(i)| &= |\Delta Y_{k}(i) - (y_{k}(t_{i} + \frac{1}{n}) - y_{k}(t_{i}) + \epsilon_{n}(t_{i} + \frac{1}{n}) - \epsilon_{n}(t_{i}))| \\
     &= |\Delta Y_{k}(i) - y_{k}'(t_{i}) - \epsilon_{n}'(t_{i}) + O(\frac{1}{n})| \\
@@ -193,26 +193,63 @@ We would now like to apply Azuma-Hoeffding (Theorem \ref{azuma}). First we need 
 \end{align*}
 because \(y_{k}\) and \(\epsilon_{n}\) are in \(C^{2}([0, c])\) and \(Y_{k}\) changes by at most \(-2\).
 
-TODO: Complete application of Azuma to wrap it up.
+Now note that \(Y_{k}^{+}(i) > 0\) if and only if \(i \geq \nu_{n}^{+}\), so \(\mathbb{P}(i \geq \nu_{n}^{+}) = \mathbb{P}(Y_{k}^{+}(i) > 0)\) for any \(0 \leq i \leq \lfloor {cn} \rfloor\) Since,
+\[
+    Y_{k}(0) = \begin{cases} n & \text{ if } k =1 \\ 0 & \text{ otherwise} \end{cases} = ny_{k}(0)
+\]
+we have that
+\[
+    Y_{k}^{+}(0) = Y_{k}(0) - ny_{k}(0) - n\epsilon_{n}(0) = n\epsilon_{n}(0)
+\]
+for all \(1 \leq k \leq \kappa\). Applying Azuma's inequality (theorem \ref{azuma}) to the supermartingale \(Y_{k}^{+}\) at step \(m = \lfloor {cn} \rfloor\), we get
+\begin{align*}
+    \mathbb{P}(m \geq \nu_{n}^{+}) &= \mathbb{P}(Y_{k}^{+}(m) > 0) \\
+    &= \mathbb{P}(Y_{k}^{+}(m) - Y_{k}^{+}(0) > -n\epsilon_{n}(0)) \\
+    &= \mathbb{P}(Y_{k}^{+}(m) - Y_{k}^{+}(0) > -n^{2/3}) \\
+    &\leq  \exp\left( - \frac{n^{4/3} }{2 C^{2}m} \right) \\
+    &\leq \exp\left( - \frac{n^{1/3} }{2 C^{2}} \right) \\
+    &= o(1)
+\end{align*}
+where we replaced \(m\) with \(\lfloor {cn} \rfloor\) and absorbed \(c\) into the \(C^{2}\).
+
+Thus, \(\mathbb{P}(m < \nu_{n}^{+})\) a.a.s.. A symmetric calculation for \(Y_{k}^{-}\) gets us that \(\mathbb{P}(m < \nu_{n}^{-})\) a.a.s. as well. Finally, applying a union bound, we get that
+\[\mathbb{P}(m \geq \nu_{n}^{+} \text{ or } m \geq \nu_{n}^{-}) \leq \mathbb{P}(m \geq \nu_{n}^{+}) + \mathbb{P}(m \geq \nu^{-}) = o(1) + o(1)\]
+
+% \begin{align*}
+%     ny_{k}(t_{m}) - n \epsilon_{n}(t_{m}) \\
+%     ny_{k}(t_{m})( 1 - \frac{\epsilon_{n}(t_{m})}{y_{k}(t_{m})}) \\
+%     ny_{k}(t_{m})( 1 - \frac{n^{-1/3} e^{4 \kappa^{3}t_{m}}}{\frac{k^{k-2}}{k!}(2t_{m})^{k-1} e^{-2kt_{m}}})
+% \end{align*}
+
+\begin{align*}
+    \mathbb{P}(&ny_{k}(c)(1 - O(n^{-1/3})) \leq  Y_{k}(m) \leq ny_{k}(c)(1 + O(n^{-1/3}))) \\
+    &= \mathbb{P}(n(y_{k}(c) - \epsilon_{n}(c)) \leq  Y_{k} \leq n(y_{k}(c) + \epsilon_{n}(c))) \\
+    &= 1 - \mathbb{P}(m \geq \nu_{n}^{+} \text{ or } m \geq \nu_{n}^{-})) \\
+    &\to  1\\
+\end{align*}
+
+Therefore the number of \(k\)-sized components of \(G_{n, \lfloor {cn} \rfloor}\) is a.a.s. \(ny_{k}(c)\)
+
+% TODO: Complete application of Azuma to wrap it up.
 
 % Since, we start out with a graph of no edges, 
 % \[Y_{k}(0) = \begin{cases} n & \text{ if }k = 1 \\ 0 & \text{ otherwise} \end{cases}.\]
 % Thus, \(y_{1}(0) = 1\) and \(y_{k}(0) = 0\) for \(k \geq 2\). 
 
 
-TODO:
-- Erdos-renyi graph
-- Thm 1.2 (and defn of a.a.s.) about number of connected components
-- Erdos-renyi process and equivalence at step to G(n, i)
-- What is differential equation Method and informally how we will use item
-- Useful theorems
-    - Taylor's Theorem (no proof)
-    - Azuma's inequality (with proof)
-        - Chernoff-Cramer bound
-        - Hoeffding's Lemma
-        - Azuma-Hoeffding inequality
-    - Cayley's formula (no proof)
-- stopping time for bad event
-- proof it is supermartingale
-- proof guessed solution solves differential equation
-- application of azuma-hoeffding
+% TODO:
+% - Erdos-renyi graph
+% - Thm 1.2 (and defn of a.a.s.) about number of connected components
+% - Erdos-renyi process and equivalence at step to G(n, i)
+% - What is differential equation Method and informally how we will use item
+% - Useful theorems
+%     - Taylor's Theorem (no proof)
+%     - Azuma's inequality (with proof)
+%         - Chernoff-Cramer bound
+%         - Hoeffding's Lemma
+%         - Azuma-Hoeffding inequality
+%     - Cayley's formula (no proof)
+% - stopping time for bad event
+% - proof it is supermartingale
+% - proof guessed solution solves differential equation
+% - application of azuma-hoeffding
