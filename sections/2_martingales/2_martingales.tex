@@ -1,9 +1,9 @@
 \section{Martingales}
-\label{stoch:martingales}
+\label{martingale:martingales}
 
 We start our initial study of martingales by first setting up some underlying concepts. Again, we let \((\Omega, \mathcal{B}, \mathbb{P})\) be our default probability space.
 
-\begin{definition}
+\begin{definition}[\cite{williams_2006}]
     Let \(T\) be a total ordering and let \(S, \Sigma\) be a measure space. A \textbf{stochastic process} is a random element \(X: \Omega, \mathcal{B} \to S^{T}, \Sigma^{T}\), where \(\Sigma^{T}\) denotes the \(\Sigma\)-product sigma algebra on \(S^{T}\). We call \(S, \Sigma\) the \textbf{state space}.
 \end{definition}
 
@@ -50,7 +50,7 @@ Note that by applying \textit{smoothing} and the identity \(\mathbb{E}(Y) = \mat
 \[\mathbb{E}(X_{t}) = \mathbb{E}(X_{t} | \{\emptyset, \Omega\}) = \mathbb{E}(\mathbb{E}(X_{t} | \mathcal{F}_{r})|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r}|\{\emptyset, \Omega\}) = \mathbb{E}(X_{r})\]
 
 When our total ordering \(T = \mathbb{N}\), we have the following alternative characterization of a martingale
-\begin{proposition}
+\begin{proposition}[\cite{resnick_2014,durrett_2010}]
     \label{natural_martingale}
     Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be an adapted process wrt filtration $\mathcal{F}_{*} = (\mathcal{F}_{n})_{n \in \mathbb{N}}$. $X$ is a martingale if and only if it satisfies the following properties:
     \begin{enumerate}
@@ -67,18 +67,18 @@ When our total ordering \(T = \mathbb{N}\), we have the following alternative ch
 
 We refer to such martingales as \textbf{discrete-time} martingales.
 
-TODO:
-- \st{definition of stochastic process}
-- \st{remark about total ordering}
-- \st{definition of adapted process and filter}
-- \st{definition of martingale (total ordering), super, sub}
-- \st{connection to natural number definition}
+% TODO:
+% - \st{definition of stochastic process}
+% - \st{remark about total ordering}
+% - \st{definition of adapted process and filter}
+% - \st{definition of martingale (total ordering), super, sub}
+% - \st{connection to natural number definition}
 
 \section{Decomposition of Discrete-Time martingales}
 
 A useful concept for discrete-time martingales is a predictable process
 
-\begin{definition}
+\begin{definition}[\cite{resnick_2014,durrett_2010}]
     Let $X: \Omega \to S^{\mathbb{N}}$ be an adapted process wrt filtration $(\mathcal{F}_{n})_{n \in \mathbb{N}}$ and state space \(S, \Sigma\). \(X\) is a \textbf{predictable process} if for all \(n \in \mathbb{N}\), \(X_{n} \in \mathcal{F}_{n-1}\), with \(\mathcal{F}_{0} = \{\emptyset, \Omega\}\).
 \end{definition}
 
@@ -95,7 +95,7 @@ The following proposition reveals that we can think of any adapted process index
 
 Before we proceed with the proof of proposition \ref{process_decomposition}, we first establish a useful concept and lemma.
 
-\begin{definition}
+\begin{definition}[\cite{resnick_2014}]
     \label{difference_defn}
     Let $d: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time process adapted to filtration $(\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then, it is a \textbf{martingale difference sequence} if
     \begin{enumerate}
@@ -104,7 +104,7 @@ Before we proceed with the proof of proposition \ref{process_decomposition}, we 
     \end{enumerate}
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}[\cite{resnick_2014}]
     \label{difference_martingale_equiv}
     \((M_{n})_{n \geq 1}\) is a martingale adapted to filtration \(\mathcal{F}_{*} = (\mathcal{F}_{n})_{n \geq 1}\) iff there exists a martingale difference sequence $d: \Omega \to \mathbb{R}^{\mathbb{N}}$  adapted to the same filtration and \(c \in \mathbb{R}\) so that
     \[M_{n} := c + \sum\limits_{j=1}^{n} d_{j}\]
@@ -177,7 +177,7 @@ Note that our proof above also gives a procedure to construct a martingale diffe
 
 We can interpret proposition \ref{process_decomposition} as saying any adapted process is some kind of "trend" with "fair" additive noise applied on top. This result naturally gives us some well-known decomposition results.
 
-\begin{corollary}[Doob's Submartingale Decomposition]
+\begin{corollary}[Doob's Submartingale Decomposition \cite{resnick_2014}]
     \label{doob_decomposition}
     Let \((Y_{n})_{n \geq 1}\) be a discrete-time adapted process wrt filtration \(\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \geq 1}\) so that \(Y_{n} \in L^{1}(\mathcal{B})\) for all \(n \geq 1\). Then it is a submartingale iff there exists a martingale \((M_{n})_{n \geq 1}\) and a non-decreasing predictable process \((A_{n})_{n \geq 1}\) with \(A_{1} = 0\) so that for \(n \geq 1\)
     \[Y_{n} = M_{n} + A_{n}\]
@@ -207,16 +207,16 @@ We can interpret proposition \ref{process_decomposition} as saying any adapted p
 \end{proof}
 
 
-TODO: 
-- \st{predictable process definition}
-- \st{decomp of adapted process into predictable process and martingale}
-- \st{Doob's Decomposition}
+% TODO: 
+% - \st{predictable process definition}
+% - \st{decomp of adapted process into predictable process and martingale}
+% - \st{Doob's Decomposition}
 
 \section{Strategies and Discrete-Time martingales}
 
 To further analyze martingales, we introduce the concept of a "strategy" for playing the "fair game", where we our strategy determines our move at the end of each turn.
 
-\begin{definition}
+\begin{definition}[\cite{durrett_2010}]
     \label{strategy}
     Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a discrete-time adapted process wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ and let $H: \Omega \to \mathbb{R}^{\mathbb{N}}$ be a predictable process on the same filtration. Then we call \(H\) a \textbf{strategy} for \(X\) with \textbf{winnings} 
     \[(H \cdot X)_{n} := \sum\limits_{m=1}^{n} H_{m} (X_{m} - X_{m-1})\]
@@ -225,7 +225,7 @@ To further analyze martingales, we introduce the concept of a "strategy" for pla
 
 The following proposition will establish that we cannot change the fairness of a game by choosing the "best" (or "worst") strategy.
 
-\begin{proposition}
+\begin{proposition}[\cite{durrett_2010}]
     \label{fairness_preservation}
     Let $(Y_{n})_{n \geq 1}$ be a discrete-time martingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ and let \((H_{n})_{n \geq 1}\) be bounded strategy for \((Y_{n})_{n \geq 1}\). Then \(((H \cdot Y)_{n})_{n \geq 1}\) is a martingale.
 \end{proposition}
@@ -288,12 +288,12 @@ Corresponding results hold for submartingales and martingales. If $(Y_{n})_{n \g
 
 We can look at playing the game up to a stopping point as a special kind of strategy. The classical definition of a "stopping time" is as follows
 
-\begin{definition}
+\begin{definition}[\cite{durrett_2010,resnick_2014}]
     Let $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ be a filtration. A stopping time on \(\mathcal{F}_{*}\) is a random variable \(\nu: \Omega \to \bar{\mathbb{N}}\) so that for each \(n \in \mathbb{N}\), \([\nu = n] \in \mathcal{F}_{n}\). Here, \(\bar{\mathbb{N}}\) is the extended natural numbers.
 \end{definition}
 
 There are a couple equivalent conditions for being a stopping time. 
-\begin{proposition}
+\begin{proposition}[\cite{resnick_2014}]
     \label{stopping_time_equiv_conds}
     Suppose $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ is a filtration on $\Omega$. Let $\nu : \Omega \to \bar{\mathbb{N}}$. The following conditions are equivalent:
     \begin{enumerate}
@@ -317,7 +317,7 @@ There are a couple equivalent conditions for being a stopping time.
 
 We can alternatively view a stopping time as a special kind of strategy:
 
-\begin{proposition}
+\begin{proposition}[\cite{durrett_2010}]
     Suppose $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ is a filtration on $\Omega$. Let $\nu : \Omega \to \bar{\mathbb{N}}$. If \(\nu\) is a stopping time, then \((1_{\nu \geq n})_{n \geq 1}\) is a predictable process.
 \end{proposition}
 
@@ -338,16 +338,16 @@ Combining with our result about strategies, we get the following result:
     This follows from the definition of \(X_{n \wedge \nu}\) and application of proposition \ref{fairness_preservation} or corollary \ref{favorability_preservation}.
 \end{proof}
 
-TODO:
-- \st{Definition}
-- \st{preservation of fairness}
-- \st{relationship to stopping times}
+% TODO:
+% - \st{Definition}
+% - \st{preservation of fairness}
+% - \st{relationship to stopping times}
 
 \section{Convergence of Discrete-time Martingales}
 
 So far we have concerned ourselves with properties of martingales without looking at any limiting behavior. Under the right conditions, we will find that discrete-time martingales do converge to a random variable. To establish this, we'll take approach of analyzing upcrossings.
 
-\begin{proposition}
+\begin{proposition}[\cite{resnick_2014}, \cite{durrett_2010}]
     Let $(\mathcal{F}_{n})_{n=1}^{\infty}$ be a filtration and let $(X_{n})_{n=1}^{\infty}$ be adapted to $(\mathcal{F}_{n})_{n=1}^{\infty}$. Let $a < b \in \mathbb{R}$. Then the following random variables are stopping times for $k \geq 1$:
     \begin{align*}
         N_{2k-1} &:= \inf\limits \{m > N_{2k-2} : X_{m} \leq a\}\\
@@ -375,7 +375,7 @@ So far we have concerned ourselves with properties of martingales without lookin
     which holds because $N_{2k}$ and $N_{2k+2}$ are both stopping times.
 \end{proof}
 
-\begin{proposition}
+\begin{proposition}[\cite{durrett_2010}]
     Let $X: \Omega \to \mathbb{R}^{\mathbb{N}}$ be discrete-time process adapted to $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let
     $$H_{n} := \begin{cases} 
     1 & \text{if } \exists k \geq 1 \text{ s.t. } N_{2k-1} < n \leq N_{2k} \\
@@ -391,7 +391,7 @@ So far we have concerned ourselves with properties of martingales without lookin
 
 We now prove some sufficient criteria for a submartingale (and thus a martingale) to converge almost surely to a random variable in \(L^{1}(\mathcal{B})\). First a useful lemma about submartingales
 
-\begin{lemma}
+\begin{lemma}[\cite{resnick_2014}]
     Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Let \(\psi: \mathbb{R} \to \mathbb{R}\) be a non-decreasing convex function so that \(\psi(X_{n}) \in L^{1}(\mathcal{B})\) for all \(n \geq 1\). Then $(\psi(X_{n}))_{n \geq 1}$ is a submartingale. 
 \end{lemma}
 
@@ -400,7 +400,7 @@ We now prove some sufficient criteria for a submartingale (and thus a martingale
     \[\mathbb{E}(\psi(X_{n+1})|\mathcal{F}_{n}) \geq \psi(\mathbb{E}(X_{n+1}|\mathcal{F}_{n})) \geq \psi(X_{n}).\]
 \end{proof}
 
-\begin{proposition}[Upcrossing Inequality]
+\begin{proposition}[Upcrossing Inequality \cite{resnick_2014,durrett_2010}]
     \label{upcrossing_inequality}
     Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$. Then $\forall a < b \in \mathbb{R}$, 
     $$(b-a)\mathbb{E}(U_{n}[a,b]) \leq \mathbb{E}(X_{n} - a)^{+} - \mathbb{E}(X_{1} - a)^{+}$$
@@ -424,7 +424,7 @@ We now prove some sufficient criteria for a submartingale (and thus a martingale
 
 Using proposition \ref{upcrossing_inequality}, we can prove convergence submartingales with uniformly bounded first moment:
 
-\begin{theorem}[Martingale Convergence Theorem]
+\begin{theorem}[Martingale Convergence Theorem \cite{durrett_2010,resnick_2014}]
     \label{martingale_convergence}
     Let $(X_{n})_{n \geq 1}$ be a discrete-time submartingale wrt filtration $\mathcal{F}_{*} := (\mathcal{F}_{n})_{n \in \mathbb{N}}$ so that \(\sup\limits_{n \geq 1} \mathbb{E}(X_{n})^{+} < \infty\). Then there exists \(X \in L^{1}(\mathcal{B})\) so that \(X_{n} \to X\) almost surely.
 \end{theorem}
@@ -485,27 +485,11 @@ Before preceding with the proof of theorem \ref{martingale_convergence}, we firs
     so $X \in L^{1}(\mathcal{B})$.
 \end{proof}
 
-We end this section by looking at a couple examples to help us understand what theorem \ref{martingale_convergence} tells us (and what it doesn't).
+We end this section by looking at an example to help us understand what theorem \ref{martingale_convergence} tells us (and what it doesn't).
 
-\textbf{Example 1}: Consider the simple random walk $(X_n)_{n \geq 1}$ starting at \(0\) with increments of \(\pm 1\). Let \(\nu := \inf\limits \{n \geq 1 : X_{n} \geq 2\}\). Since \((X_n)_{n \geq 1}\) is a martingale and \(\nu\) is a stopping time, so \(X_{n \wedge \nu}\) is a martingale as well. Since \((X_n)_{n \geq 1}\) starts at \(0\) and moves by at most \(1\), we must have that \(\nu \geq 3\). So \(0 = \mathbb{E}(X_{1}) = \mathbb{E}(X_{1 \wedge \nu}) = \mathbb{E}(X_{n \wedge \nu})\) \(\forall n \geq 1\). Now certainly \(\sup\limits_{n \geq 1} \mathbb{E}(X_{n \wedge \nu})^{+} \leq 2\), so \(X_{n \wedge \nu} \to X\) almost surely by theorem \ref{martingale_convergence}. Since \(X_{n \wedge \nu}\) only takes integral values, \(X\) must (almost surely) as well. But since \(X_{n \wedge \nu}\) changes by \(\pm 1\) if it is not already at \(2\), \(X\) must be \(2\). Thus, \(\mathbb{E}(X) = 2 \neq 0 = \mathbb{E}(X_{n \wedge \nu})\) for \(n \geq 1\). Therefore \((X_{n \wedge \nu})_{n \geq 1}\) cannot converge in \(L^{1}(\mathcal{B})\).
+\textbf{Example 1} \cite{durrett_2010}: Consider the simple random walk $(X_n)_{n \geq 1}$ starting at \(0\) with increments of \(\pm 1\). Let \(\nu := \inf\limits \{n \geq 1 : X_{n} \geq 2\}\). Since \((X_n)_{n \geq 1}\) is a martingale and \(\nu\) is a stopping time, so \(X_{n \wedge \nu}\) is a martingale as well. Since \((X_n)_{n \geq 1}\) starts at \(0\) and moves by at most \(1\), we must have that \(\nu \geq 3\). So \(0 = \mathbb{E}(X_{1}) = \mathbb{E}(X_{1 \wedge \nu}) = \mathbb{E}(X_{n \wedge \nu})\) \(\forall n \geq 1\). Now certainly \(\sup\limits_{n \geq 1} \mathbb{E}(X_{n \wedge \nu})^{+} \leq 2\), so \(X_{n \wedge \nu} \to X\) almost surely by theorem \ref{martingale_convergence}. Since \(X_{n \wedge \nu}\) only takes integral values, \(X\) must (almost surely) as well. But since \(X_{n \wedge \nu}\) changes by \(\pm 1\) if it is not already at \(2\), \(X\) must be \(2\). Thus, \(\mathbb{E}(X) = 2 \neq 0 = \mathbb{E}(X_{n \wedge \nu})\) for \(n \geq 1\). Therefore \((X_{n \wedge \nu})_{n \geq 1}\) cannot converge in \(L^{1}(\mathcal{B})\).
 
 This example seems to fly in our face of what it means to be a "fair game". How can \((X_{n \wedge \nu})_{n \geq 1}\) be a martingale, but converge to something with larger expectation almost surely? If we were to play finitely many games, then the probability mass assigned to positive results \(1\) and \(2\) will be matched equally by the probability mass asssigned to negative results. That is, although it is almost sure that at some \(n\) we will hit \(X_{n} = 2\), we may suffer very large losses before that happens. 
 
-\textbf{Example 2}:
+% \textbf{Example 2}:
 
-TODO:
-- \st{Upcrossing inequality}
-- \st{convergence of discrete-time martingales}
-- pathological examples
-
-\section{Cotninuous-time martingales, definitions}
-- indistinguishable
-- section 1.1 Karatzas shreve
-
-\section{Continuous-time martingales, stopping times}
--section 1.2 Karatzas shreve
-
-\section{Convergence of Continuous-time Martingales}
-- section 1.3 karatzas shreve
-- submartingale inequalities (Karatzas thm 3.8)
-- convergence of right-continuous martingales

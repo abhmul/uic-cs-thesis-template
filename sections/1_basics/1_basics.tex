@@ -3,7 +3,7 @@
 
 Suppose we are given a probability space \((\Omega, \mathcal{B}, \mathbb{P})\) and a random variable \(X \in L^{1}(\mathcal{B})\). We would like to describe the operation of "viewing" this random variable from a sub-sigma algebra \(\mathcal{G} \subset \mathcal{B}\). We call this operation \textit{conditional expectation} and define it as follows:
 
-\begin{definition}
+\begin{definition}[\cite{durrett_2010}, \cite{resnick_2014}]
    The \textbf{conditional expectation} of \(X\) given \(\mathcal{G}\), denoted \(\mathbb{E}({X}|{\mathcal{G}})\), is a random variable with the following properties
     \begin{enumerate}
         \item \(\mathbb{E}({X}|{\mathcal{G}}) \in \mathcal{G}\)
@@ -25,7 +25,7 @@ A thorough proof of the above result can be found in \cite{folland_2011}. Note t
 in \(L^{1}(\mathcal{G})\).
 
 Conditional expectation has many useful properties, some of which generalize from expectation:
-\begin{proposition}
+\begin{proposition}[\cite{durrett_2010}, \cite{resnick_2014}]
     \label{cexpe_properties}
     Let \(X, Y \in L^{1}(\mathcal{B})\). \(\mathbb{E}(\cdot|{\mathcal{G}})\) has the following properties
     \begin{enumerate}
@@ -38,10 +38,4 @@ Conditional expectation has many useful properties, some of which generalize fro
     \end{enumerate}
 \end{proposition}
 
-For any random variable \(Z \in \mathcal{B}\), we can define \(\mathbb{E}(X|Y) := \mathbb{E}(X|\sigma(Y))\). If we want to condition on the event \([Y=y]\), we can define \(\mathbb{E}(X|Y=y) = \mathbb{E}(X|Y)(\omega)\) for any \(\omega \in [Y=y]\). For any event \(A \in \mathcal{B}\) that is not defined in terms of another random variable, we can define \(\mathbb{E}(X|A) = \mathbb{E}(X|1_{A} = 1)\).
-
-\section{Regular Conditional Probabilities}
-
-TODO: Standard results
-1. existence on "nice" spaces
-2. relationship to conditional expectation
+For any random variable \(Z \in \mathcal{B}\), we can define \(\mathbb{E}(X|Z) := \mathbb{E}(X|\sigma(Z))\). If we want to condition on the event \([Z=z]\), we can define \(\mathbb{E}(X|Z=z) = \mathbb{E}(X|Z)(\omega)\) for any \(\omega \in [Z=z]\). For any event \(A \in \mathcal{B}\) that is not defined in terms of another random variable, we can define \(\mathbb{E}(X|A) = \mathbb{E}(X|1_{A} = 1)\).

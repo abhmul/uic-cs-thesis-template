@@ -1,11 +1,7 @@
-\section{Polya's Urn}
-\label{stoch:polya}
+\section{Differential Equation Method}
+\label{example:diffeq}
 
-\section{Borel-Cantelli Lemma}
-
-\section{Differential Equation Method?}
-
-In this section we examine an example studied in \cite{diffeq_2020} about counting the number of connected components of size \(k\) in an Erdos-Renyi graph. First we  construct our probability space. 
+In this section we examine an example studied in \cite{diffeq_2020} about counting the number of connected components of size \(k\) in an Erdős-Rényi graph. First we  construct our probability space. 
 
 We let \(\mathbb{G}_{n}\) be the set of graphs on \([n]\) for some \(n \geq 0\). Denote \(\binom{[n]}{2}\) the set of edges of the complete graph on \([n]\). Each graph in \(G \in \mathbb{G}_{n}\) has the same vertex set, so they can be identified with their edge sets \(E(G) \subset \binom{[n]}{2}\). Thus, we simply refer to a graph in \(\mathbb{G}_{n}\) by its set of edges. 
 
@@ -14,33 +10,33 @@ Let \(n \in \mathbb{N}\), let \(\Omega :=  \binom{[n]}{2}\), and let \(M = \bino
 This probability measure simply assigns uniform probability to all permutations of edges. Let \(\mathcal{F}_{0}= \{\emptyset, \Omega^{M}\}\) and \(\mathcal{F}_{i} = \{S \times \Omega^{M-i} : S \in \mathcal{P}(\Omega^{i})\}\) make up the filtration \(\mathcal{F}_{*} := (\mathcal{F}_{i})_{i=0}^{M}\).
 
 \begin{definition}
-    An \textbf{Erdos-Renyi random graph} on \(m \in \{0, \dots, M\}\) edges, \(G_{n, m}: \Omega \to \mathbb{G}_{n}\), is defined on \(\omega \in \Omega\) as
+    An \textbf{Erdős-Rényi random graph} on \(m \in \{0, \dots, M\}\) edges, \(G_{n, m}: \Omega \to \mathbb{G}_{n}\), is defined on \(\omega \in \Omega\) as
     \[G_{n, m}(\omega) = \{\omega_{1}, \dots, \omega_{m}\}.\]
     That is, it is a random graph sampled uniformly from all graphs on \(n\) vertices with \(m\) edges. 
 \end{definition}
 
-We can think of sampling a particular Erdos-Renyi graph as the result of picking an edge \(m\) times without replacement. This is captured by the process defined below:
+We can think of sampling a particular Erdős-Rényi graph as the result of picking an edge \(m\) times without replacement. This is captured by the process defined below:
 \begin{definition}
-    The \textbf{Erdos-Renyi graph process} is the stochastic process \((G_{n, i}: \Omega \to \mathbb{G}_{n})_{i=0}^{M}\) adapted to \(\mathcal{F}_{*}\).
+    The \textbf{Erdős-Rényi graph process} is the stochastic process \((G_{n, i}: \Omega \to \mathbb{G}_{n})_{i=0}^{M}\) adapted to \(\mathcal{F}_{*}\).
 \end{definition}
 
 We would like to characterize properties about this process as \(n \to \infty\). To do so, we use the following concept:
-\begin{definition}
+\begin{definition}[\cite{diffeq_2020}]
      Let \((X_{n}: \Omega \to \mathbb{R})_{n \geq 1}\) be a stochastic process and let \((x_{n})_{n \geq 1}\subset \mathbb{R}\). Then \(X_{n} = x_{n}\) \textbf{asymptotically almost surely} if there exists \((\epsilon_{n})_{n \geq 1} \subset \mathbb{R}\) so that \(\epsilon_{n} = o(1)\) and
     \[\mathbb{P}((1 - \epsilon_{n})x_{n} \leq X_{n} \leq (1 + \epsilon_{n})x_{n}) \to 1\]
     as \(n \to \infty\). It may be abbreviated a.a.s..
 \end{definition}
 
-We would like to prove the following a.a.s. characterization of the number of connected components of a fixed size of an Erdos-Renyi random graph.
+We would like to prove the following a.a.s. characterization of the number of connected components of a fixed size of an Erdős-Rényi random graph.
 
-\begin{theorem}
+\begin{theorem}[\cite{diffeq_2020}]
     Let \(\kappa \geq 1\) and \(c \in \mathbb{R}^{\geq 0}\). Then a.a.s. the number of connected components of order \(k\), for \(1 \leq k \leq \kappa\), in \(G(n, \lfloor cn \rfloor)\) is
     \[\frac{k^{k-2}}{k!}(2c)^{k-1} e^{-2kc}n\]
 \end{theorem}
 
 To prove this theorem, we will apply the \textit{differential equation method}. This method works by approximating a random discrete process (in our case the number of connected components of size \(k\) in our random graph as we sample edges)with a continuous, deterministic, differential equation. We construct the differential equation using the expected change in our tracked random variable. We'll use some process-related heuristic to find a solution to the differential equation. We then show that our error incurred from our continuous approximation is small by bounding it from above and below by a supermartingale and submartingale respectively, then applying the following:
 
-\begin{theorem}[Azuma-Hoeffding's Inequality \cite{diffeq_2020}]
+\begin{theorem}[Azuma-Hoeffding's Inequality \cite{diffeq_2020,azuma_1967}]
     \label{azuma}
     Let \((Y_{n})_{n \geq 0}\) be a supermartingale and suppose there exists real \(C \geq 0\) \(|Y_{n+1} - Y_{n}| \leq C\) a.s. for \(n \geq 0\). Then, for all \(\lambda \in \mathbb{R}^{\geq 0}\) and \(n \geq 1\),
     \[\mathbb{P}(Y_{n} - Y_{0} \geq  \lambda) \leq \exp\left(-\frac{\lambda^{2}}{2C^{2}n}\right)\]
@@ -56,10 +52,10 @@ The following will also be useful:
     \[f(b) = f(a) + f'(a)(b-a) + \frac{f''(\tau)}{2}(b-a)^{2}.\]
 \end{theorem}
 
-Now we come back to our task of studying the number of fixed size connected components in an Erdos-Renyi graph. Recall we are given \(c \in
+Now we come back to our task of studying the number of fixed size connected components in an Erdős-Rényi graph. Recall we are given \(c \in
 \mathbb{R}^{\geq 0}\) and suppose \(n \in \mathbb{N}\). Let \(i \leq \lfloor {cn} \rfloor\) and define \(Y_{k}(i)\) to be the number of components with exactly \(k\) vertices in \(G_{n, i}\).
 
-We would like to show that \(Y_{k}(i) = n y_{k}(t_{i})\) a.a.s. for \(t_{i} := \frac{i}{n}\) and \(y_{k}(t) = \frac{k^{k-2}}{k!}(2t)^{k-1} e^{-2kt}\). In our Erdos-Renyi process, we'll let \(i\) progress to \(\lfloor {cn} \rfloor\) (i.e. let \(t \to c\)) to get the desired result. To prove \(Y_{k}(i) = n y_{k}(t_{i})\) a.a.s., we'll make a (good) guess that \(\epsilon_{n}(t) = n^{-1/3} e^{4 \kappa^{3} t}\) and show
+We would like to show that \(Y_{k}(i) = n y_{k}(t_{i})\) a.a.s. for \(t_{i} := \frac{i}{n}\) and \(y_{k}(t) = \frac{k^{k-2}}{k!}(2t)^{k-1} e^{-2kt}\). In our Erdős-Rényi process, we'll let \(i\) progress to \(\lfloor {cn} \rfloor\) (i.e. let \(t \to c\)) to get the desired result. To prove \(Y_{k}(i) = n y_{k}(t_{i})\) a.a.s., we'll make a (good) guess that \(\epsilon_{n}(t) = n^{-1/3} e^{4 \kappa^{3} t}\) and show
 \[n(y_{k}(t_{i}) - \epsilon_{n}(t_{i})) \leq Y_{k}(i) \leq n(y_{k}(t_{i}) + \epsilon_{n}(t_{i}))\]
 tends to probability 1. This reasoning behind this choice of \(\epsilon_{n}\) will be clear as we proceed with the computations.
 
@@ -215,12 +211,12 @@ where we replaced \(m\) with \(\lfloor {cn} \rfloor\) and absorbed \(c\) into th
 Thus, \(\mathbb{P}(m < \nu_{n}^{+})\) a.a.s.. A symmetric calculation for \(Y_{k}^{-}\) gets us that \(\mathbb{P}(m < \nu_{n}^{-})\) a.a.s. as well. Finally, applying a union bound, we get that
 \[\mathbb{P}(m \geq \nu_{n}^{+} \text{ or } m \geq \nu_{n}^{-}) \leq \mathbb{P}(m \geq \nu_{n}^{+}) + \mathbb{P}(m \geq \nu^{-}) = o(1) + o(1)\]
 
+so
 % \begin{align*}
 %     ny_{k}(t_{m}) - n \epsilon_{n}(t_{m}) \\
 %     ny_{k}(t_{m})( 1 - \frac{\epsilon_{n}(t_{m})}{y_{k}(t_{m})}) \\
 %     ny_{k}(t_{m})( 1 - \frac{n^{-1/3} e^{4 \kappa^{3}t_{m}}}{\frac{k^{k-2}}{k!}(2t_{m})^{k-1} e^{-2kt_{m}}})
 % \end{align*}
-
 \begin{align*}
     \mathbb{P}(&ny_{k}(c)(1 - O(n^{-1/3})) \leq  Y_{k}(m) \leq ny_{k}(c)(1 + O(n^{-1/3}))) \\
     &= \mathbb{P}(n(y_{k}(c) - \epsilon_{n}(c)) \leq  Y_{k} \leq n(y_{k}(c) + \epsilon_{n}(c))) \\
@@ -238,9 +234,9 @@ Therefore the number of \(k\)-sized components of \(G_{n, \lfloor {cn} \rfloor}\
 
 
 % TODO:
-% - Erdos-renyi graph
+% - Erdős-Rényi graph
 % - Thm 1.2 (and defn of a.a.s.) about number of connected components
-% - Erdos-renyi process and equivalence at step to G(n, i)
+% - Erdős-Rényi process and equivalence at step to G(n, i)
 % - What is differential equation Method and informally how we will use item
 % - Useful theorems
 %     - Taylor's Theorem (no proof)
