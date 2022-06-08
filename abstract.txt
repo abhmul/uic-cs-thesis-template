@@ -1,0 +1,1 @@
+We set up some of the basic probability concepts needed to define martingales. We study ”strategies” on martingales and how they help us prove convergence. In addition, we prove decomposition of processes in terms of martingales. Finally, we look at an example application of martingales to study the number of components in an Erdős-Rényi graph.
